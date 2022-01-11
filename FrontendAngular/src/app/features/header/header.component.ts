@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit {
   public onClickMenu(selectedIndex:number): void {
     this.resetElements();
     this.elements[selectedIndex].isClicked = true;
-    console.log(selectedIndex);
+    //console.log(selectedIndex);
 
     this.route.navigate([this.elements[selectedIndex].path])
   }

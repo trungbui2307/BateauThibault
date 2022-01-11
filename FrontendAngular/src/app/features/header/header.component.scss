@@ -2,32 +2,23 @@
 .header-containter {
     text-align: center;
     background-color:black;
+    font-family: Arial, Helvetica, sans-serif;
 
     > div {
-        color:cadetblue;
-        font-weight: bold;
+        color:white;
         font-size: large;
-        border: 1px;
-        height: 75px;
+        height: 60px;
     }
 
     >div:hover {
-        color: white;
-        background-color: chocolate;
-    }
-
-    >div:active {
-        color: white;
-        background-color:cornflowerblue;
+        background-color:steelblue;
     }
 }
 
 .elementclicked {
-    color: blue;
-    background-color:palegreen;
+    background-color:blue;
 }
 
 .elementdefault {
-    color: cadetblue;
     background-color: black;
 }
