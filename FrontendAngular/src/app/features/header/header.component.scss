@@ -1,0 +1,33 @@
+
+.header-containter {
+    text-align: center;
+    background-color:black;
+
+    > div {
+        color:cadetblue;
+        font-weight: bold;
+        font-size: large;
+        border: 1px;
+        height: 75px;
+    }
+
+    >div:hover {
+        color: white;
+        background-color: chocolate;
+    }
+
+    >div:active {
+        color: white;
+        background-color:cornflowerblue;
+    }
+}
+
+.elementclicked {
+    color: blue;
+    background-color:palegreen;
+}
+
+.elementdefault {
+    color: cadetblue;
+    background-color: black;
+}
