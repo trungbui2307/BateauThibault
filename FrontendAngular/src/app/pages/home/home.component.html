@@ -1,1 +1,20 @@
-<p>home works!</p>
+<div>
+  <div id="home-title">
+    <p>Bateau Thibault</p>
+  </div>
+
+  <div class="home-cards" fxLayout="row" fxLayoutAlign="space-between">
+    <div fxLayout="column">
+      <app-card 
+        [title]="elements[0].title"
+        [content]="elements[0].content"
+        ></app-card>
+    </div>
+    <div fxLayout="column">
+      <app-card
+        [title]="elements[1].title"
+        [content]="elements[1].content"></app-card>
+    </div>
+  </div>
+
+</div>
