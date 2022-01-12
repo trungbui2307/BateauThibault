@@ -1,0 +1,27 @@
+<div class="detail-product-container">
+    <h3>Veuillez saisir le produit dont vous voulez les informations</h3>
+  <mat-form-field appearance="fill">
+    <mat-label>Selectez Produit</mat-label>
+    <mat-select (selectionChange)="onSelectProductChange($event)">
+        <mat-option *ngFor="let product of products" [value]="product.id">
+            {{ product.name }}
+        </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-card class="dp-card-container" *ngIf="selectedProduct !== undefined">
+    <mat-card-title>{{ selectedProduct.name }}</mat-card-title>
+    <mat-divider inset></mat-divider>
+    <mat-card-content>
+      <p>Prix: {{ selectedProduct.price }} euros</p>
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <p fxLayout="column">Promotion: {{ selectedProduct.discount }} %</p>        
+        <input style="width:50px;height:30px;" fxLayout="column" type="number" id="salepercent">
+        <mat-card-actions fxLayout="column">
+            <button mat-raised-button color="primary">Modifier Promotion</button>
+          </mat-card-actions>
+      </div> 
+      <p>Quantite en stock: {{ selectedProduct.quantity_stock }}</p>     
+    </mat-card-content>
+  </mat-card>
+</div>

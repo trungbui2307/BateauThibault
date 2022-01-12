@@ -1,0 +1,24 @@
+
+.header-containter {
+    text-align: center;
+    background-color:black;
+    font-family: Arial, Helvetica, sans-serif;
+
+    > div {
+        color:white;
+        font-size: large;
+        height: 60px;
+    }
+
+    >div:hover {
+        background-color:steelblue;
+    }
+}
+
+.elementclicked {
+    background-color:blue;
+}
+
+.elementdefault {
+    background-color: black;
+}

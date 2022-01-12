@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,44 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  public selectedIndex: number = 0;
+
+  public elements: any = [
+    {
+      id: 0,
+      title: "Home", 
+      path: "",
+      isClicked: true
+    },
+    {
+      id: 1,
+      title: "Details d'un produit", 
+      path: "detail",
+      isClicked: false
+    },
+    {
+      id: 2,
+      title: "Gerer les produits", 
+      path: "stock",
+      isClicked: false
+    }
+  ]
+
+  constructor(private route: Router) { }
 
   ngOnInit(): void {
   }
 
+  public onClickMenu(selectedIndex:number): void {
+    this.resetElements();
+    this.elements[selectedIndex].isClicked = true;
+
+    this.route.navigate([this.elements[selectedIndex].path])
+  }
+
+  private resetElements(): void {
+    for(let i = 0;i < 3; i++) {
+      this.elements[i].isClicked = false;
+    }
+  }
 }
