@@ -9,6 +9,7 @@ class Product(models.Model):
     unit = models.CharField(max_length=20, verbose_name="Unit")
     availability = models.BooleanField(default=True, verbose_name="Availability")
     sale = models.BooleanField(default=False, verbose_name="Sale")
+    price_on_sale = models.FloatField(default=0, verbose_name="Price on sale", blank=False, null=False)
     discount = models.FloatField(default=0, verbose_name="Discount")
     comments = models.TextField(verbose_name="Comment", blank=True, null=True)
     owner = models.CharField(max_length=20, verbose_name="Name of owner", blank=False, null=False)
