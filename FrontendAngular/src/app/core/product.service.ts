@@ -8,10 +8,12 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
 
+  public API_URL: string = "http://localhost:3000";
+
   constructor(private http: HttpClient) { }
 
   public getProductsFromJson():Observable<Product[]> {
-    return this.http.get<Product[]>("../assets/products.json");
+    return this.http.get<Product[]>(this.API_URL + "/infoproducts"); // Get /inforproducts "../assets/data/products.json"
   }
 }
 

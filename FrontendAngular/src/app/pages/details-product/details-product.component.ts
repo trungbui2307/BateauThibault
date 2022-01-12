@@ -8,7 +8,8 @@ import { Product, ProductService } from 'src/app/core/product.service';
 })
 export class DetailsProductComponent implements OnInit {
 
-  public listeProduits: Product[] = [];
+  public products: Product[] = [];
+  public selectedProduct: Product | undefined = undefined;
 
   constructor(private productService: ProductService) { }
 
@@ -18,16 +19,20 @@ export class DetailsProductComponent implements OnInit {
 
   public getProducts() {
     this.productService.getProductsFromJson().subscribe((res: Product[]) => {
-      this.listeProduits = res;
+      this.products = res;
     },
     (err) => {
-      alert("failed loading json data");
+      alert("API Get failed");
     });
   }
 
   public getProduct(id:number) {
-    return this.listeProduits.find(e => e.id === id);
+    return this.products.find(e => e.id === id);
   }
 
-
+  public onSelectProductChange(ob: any): void {
+    this.selectedProduct = this.getProduct(ob.value);
+    console.log(this.selectedProduct);
+    console.log(ob.value);
+  }
 }
