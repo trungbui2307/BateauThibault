@@ -20,10 +20,6 @@ class ProductListAPIView(APIView):
 class ProductRetrieveAPIView(APIView):
     serializer_class = ProductSerializer
 
-    def get_queryset(self):
-        queryset = Product.objects.all()
-        return queryset
-
     def get(self, request, id, *args, **kwargs):
         if id != None:
             product = Product.objects.get(id=id)
@@ -34,79 +30,66 @@ class ProductRetrieveAPIView(APIView):
 class ProductDiscountAPIView(APIView):
     serializer_class = ProductSerializer
 
-    def get_queryset(self):
-        queryset = Product.objects.all()
-        return queryset
-
-    def get(self, request, id, newprice, *args, **kwargs):
+    def put(self, request, id, *args, **kwargs):
         try:
-            if id != None:
+            if id != None and request.method == "PUT":
                 product = Product.objects.get(id=id)
-                product.discount = newprice
                 product.sale = True
+                product.discount = request.data['discount']
                 product.save()
                 serializer = ProductSerializer(product)
         except:
-            products = self.get_queryset()
-            serializer = ProductSerializer(products, many=True)
+            print("Can't find any product")
 
         return Response(serializer.data)
+
 
 class ProductRemoveAPIView(APIView):
     serializer_class = ProductSerializer
 
-    def get_queryset(self):
-        queryset = Product.objects.all()
-        return queryset
-
-    def get(self, request, id, *args, **kwargs):
+    def put(self, request, id, *args, **kwargs):
         try:
-            if id != None:
+            if id != None and request.method == "PUT":
                 product = Product.objects.get(id=id)
                 product.sale = False
                 product.save()
                 serializer = ProductSerializer(product)
         except:
-            products = self.get_queryset()
-            serializer = ProductSerializer(products, many=True)
+            print("Can't find any product")
 
         return Response(serializer.data)
 
 class ProductIncrementStockAPIView(APIView):
     serializer_class = ProductSerializer
 
-    def get_query(self):
-        queryset = Product.objects.all()
-        return queryset
-
-    def get(self, request, id, number, *args, **kwargs):
+    def put(self, request, id, *args, **kwargs):
         try:
-            if id != None:
+            if id != None and request.method == "PUT":
                 product = Product.objects.get(id=id)
+                number = request.data["number"]
                 product.quantityInStock = product.quantityInStock + number
                 product.save()
                 serializer = ProductSerializer(product)
         except:
-            print(f"{id} not found")
+            print(f"Can't find any product")
 
         return Response(serializer.data)
+
 
 class ProductDecrementStockAPIView(APIView):
     serializer_class = ProductSerializer
 
-    def get_query(self):
-        queryset = Product.object.all()
-        return queryset
-
-    def get(self, request, id, number, *args, **kwargs):
+    def put(self, request, id, *args, **kwargs):
         try:
-            if id != None:
+            if id != None and request.method == "PUT":
                 product = Product.objects.get(id=id)
-                product.quantityInStock = product.quantityInStock - number
-                product.save()
+                number = request.data["number"]
+                if product.quantityInStock > number:
+                    product.quantityInStock = product.quantityInStock - number
+                    product.save()
                 serializer = ProductSerializer(product)
         except:
-            print(f"{id} not found")
+            print(f"Can't find any product")
 
         return Response(serializer.data)
 
