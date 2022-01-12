@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +9,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
 
   public selectedIndex: number = 0;
-  //public backgroundColor: string = 'black';
 
   public elements: any = [
     {
@@ -40,7 +39,6 @@ export class HeaderComponent implements OnInit {
   public onClickMenu(selectedIndex:number): void {
     this.resetElements();
     this.elements[selectedIndex].isClicked = true;
-    //console.log(selectedIndex);
 
     this.route.navigate([this.elements[selectedIndex].path])
   }

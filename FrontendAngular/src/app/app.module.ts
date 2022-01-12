@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -8,6 +11,7 @@ import { HeaderComponent } from './features/header/header.component';
 import { DetailsProductComponent } from './pages/details-product/details-product.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ManageStockComponent } from './pages/manage-stock/manage-stock.component';
+import { CardComponent } from './features/card/card.component';
 
 @NgModule({
   declarations: [
@@ -15,12 +19,16 @@ import { ManageStockComponent } from './pages/manage-stock/manage-stock.componen
     HomeComponent,
     HeaderComponent,
     DetailsProductComponent,
-    ManageStockComponent
+    ManageStockComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatCardModule,
+    MatDividerModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
