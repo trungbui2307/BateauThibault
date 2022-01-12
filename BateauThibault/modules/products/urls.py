@@ -8,4 +8,6 @@ urlpatterns = [
     path('infoproduct/<int:id>/', views.ProductRetrieveAPIView.as_view(), name='product_detail'),
     path('putonsale/<int:id>/<float:newprice>/', views.ProductDiscountAPIView.as_view(), name='product_on_sale'),
     path('remove/<int:id>/', views.ProductRemoveAPIView.as_view(), name='product_sale_remove'),
+    path('incrementStock/<int:id>/<int:number>/', views.ProductIncrementStockAPIView.as_view(), name='product_increment'),
+    path('decrementStock/<int:id>/<int:number>/', views.ProductDecrementStockAPIView.as_view(),name='product_decrement'),
 ]

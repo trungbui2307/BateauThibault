@@ -72,8 +72,43 @@ class ProductRemoveAPIView(APIView):
 
         return Response(serializer.data)
 
+class ProductIncrementStockAPIView(APIView):
+    serializer_class = ProductSerializer
 
+    def get_query(self):
+        queryset = Product.objects.all()
+        return queryset
 
+    def get(self, request, id, number, *args, **kwargs):
+        try:
+            if id != None:
+                product = Product.objects.get(id=id)
+                product.quantityInStock = product.quantityInStock + number
+                product.save()
+                serializer = ProductSerializer(product)
+        except:
+            print(f"{id} not found")
+
+        return Response(serializer.data)
+
+class ProductDecrementStockAPIView(APIView):
+    serializer_class = ProductSerializer
+
+    def get_query(self):
+        queryset = Product.object.all()
+        return queryset
+
+    def get(self, request, id, number, *args, **kwargs):
+        try:
+            if id != None:
+                product = Product.objects.get(id=id)
+                product.quantityInStock = product.quantityInStock - number
+                product.save()
+                serializer = ProductSerializer(product)
+        except:
+            print(f"{id} not found")
+
+        return Response(serializer.data)
 
 
 
