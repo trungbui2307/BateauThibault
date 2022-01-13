@@ -9,19 +9,19 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-card class="dp-card-container" *ngIf="selectedProduct !== undefined">
-    <mat-card-title>{{ selectedProduct.name }}</mat-card-title>
+  <mat-card class="dp-card-container" *ngIf="this.selectedProduct !== undefined">
+    <mat-card-title>{{ this.selectedProduct.name }}</mat-card-title>
     <mat-divider inset></mat-divider>
     <mat-card-content>
-      <p>Prix: {{ selectedProduct.price }} euros</p>
+      <p>Prix: {{ this.selectedProduct.price }} euros</p>
       <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-        <p fxLayout="column">Promotion: {{ selectedProduct.discount }} %</p>        
+        <p fxLayout="column">Promotion: {{ this.selectedProduct.discount }} %</p>        
         <input #dpInput style="width:55px;height:30px;" fxLayout="column" type="number" id="salepercent">
         <mat-card-actions fxLayout="column">
             <button mat-raised-button color="primary" (click)="updateSale()">Modifier Promotion</button>
           </mat-card-actions>
-      </div> 
-      <p>Quantite en stock: {{ selectedProduct.quantityInStock }}</p>     
+      </div>  
+      <p>Quantite en stock: {{ this.selectedProduct.quantityInStock*10 }}</p>     
     </mat-card-content>
   </mat-card>
 </div>

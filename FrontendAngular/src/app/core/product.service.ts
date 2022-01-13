@@ -17,7 +17,7 @@ export class ProductService {
   }
 
   public putProduct(id: number, product: PutProductOnSale): Observable<PutProductOnSale> {
-    return this.http.put<PutProductOnSale>(this.API_URL + "/putonsale/"+id, product, 
+    return this.http.put<PutProductOnSale>(this.API_URL + "/putonsale/"+id+"/", product, 
       {
         headers: new HttpHeaders({
         'Content-Type':  'application/json'
