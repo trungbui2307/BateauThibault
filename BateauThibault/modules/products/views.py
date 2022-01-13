@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import ProductSerializer, ProductDetailSerializer
@@ -21,10 +22,13 @@ class ProductRetrieveAPIView(APIView):
     serializer_class = ProductSerializer
 
     def get(self, request, id, *args, **kwargs):
-        if id != None:
+        try:
             product = Product.objects.get(id=id)
-            serializer = ProductSerializer(product)
+        except Product.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
+        if id != None:
+            serializer = ProductSerializer(product)
             return Response(serializer.data)
 
 class ProductDiscountAPIView(APIView):
