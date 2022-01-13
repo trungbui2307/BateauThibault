@@ -37,18 +37,25 @@ export class DetailsProductComponent implements OnInit {
     this.selectedProduct = this.getProduct(ob.value);
   }
 
-  public updateSale(): void {
+  public updateSale() {
     let sale: number | null = this.dpInput?.nativeElement.value;
 
-    if (this.selectedProduct == undefined || sale == null || sale < 0 || sale > 100)
+    if (this.selectedProduct == undefined || sale == null || sale < 0 || sale > 1)
       return;
       
     let putProductOnSale: PutProductOnSale = {
       discount: sale
     }
     this.productService.putProduct(this.selectedProduct.id,putProductOnSale).subscribe((res:PutProductOnSale) => {
-      
+
     });
-    console.log("Clicked ", sale);
+    this.reloadData();
+  }
+
+  private async reloadData() {
+    await this.getProducts();
+    if (this.selectedProduct != undefined) {
+      this.selectedProduct = this.getProduct(this.selectedProduct.id);
+    }   
   }
 }
