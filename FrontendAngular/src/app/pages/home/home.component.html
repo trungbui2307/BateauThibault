@@ -2,18 +2,14 @@
   <div id="home-title">
     <p>Bateau Thibault</p>
   </div>
-
   <div class="home-cards" fxLayout="row" fxLayoutAlign="space-between">
-    <div fxLayout="column">
-      <app-card 
-        [title]="elements[0].title"
-        [content]="elements[0].content"
-        ></app-card>
-    </div>
-    <div fxLayout="column">
+    <div *ngFor="let element of elements; let i = index" fxLayout="column">
       <app-card
-        [title]="elements[1].title"
-        [content]="elements[1].content"></app-card>
+        [cardId]="i" 
+        [title]="element.title"
+        [content]="element.content"
+        (subjectClickEvent)="receiveClickEvent($event)"
+        ></app-card>
     </div>
   </div>
 
