@@ -16,9 +16,9 @@
       <p>Prix: {{ selectedProduct.price }} euros</p>
       <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
         <p fxLayout="column">Promotion: {{ selectedProduct.discount }} %</p>        
-        <input style="width:50px;height:30px;" fxLayout="column" type="number" id="salepercent">
+        <input #dpInput style="width:55px;height:30px;" fxLayout="column" type="number" id="salepercent">
         <mat-card-actions fxLayout="column">
-            <button mat-raised-button color="primary">Modifier Promotion</button>
+            <button mat-raised-button color="primary" (click)="updateSale()">Modifier Promotion</button>
           </mat-card-actions>
       </div> 
       <p>Quantite en stock: {{ selectedProduct.quantity_stock }}</p>     
