@@ -5,8 +5,7 @@ BateauThibault
 * Informations générales
 * Téchnology
 * Installer
-* Caractéristiques
-* Contribuer
+* Fonctionnalités 
 * Questions? Problèmes? Suggestions?
 
 ## Informations générales
@@ -25,7 +24,17 @@ Langages:
 ## Installer
 Pour exécuter ce projet, installez-le localement à l'aide de npm :
 ```
-$ cd ../lorem
-$ npm install
-$ npm start
+$ npm install - g @angular/cli
+$ cd FrontendAngular
+$ ng serve
 ```
+## Fonctionnalités
+* Détail d’un produit
+* Modification du stock
+* Modification du pourcentage de promotion
+* Calcul de chiffre d’affaire
+* ...
+
+## Questions? Problèmes? Suggestions?
+* Rapporter un bug ou request fonctionnalité, veuillez vous assurer que quelqu'un d'autre n'a pas créé de problème pour le même sujet.
+* Besoin d'aide pour utiliser Bateau Thibault ? Contactez Slack. Un ingénieur se fera un plaisir de vous aider.
