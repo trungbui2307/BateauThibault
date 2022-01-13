@@ -2,13 +2,11 @@
 BateauThibault
 
 # Table of contents 
-* [Technologies](#general-info)
-* [Technologies](#technologies)
-* [Informations](##Informations-générales)
-* Téchnology
-* Installer
-* Fonctionnalités 
-* Questions? Problèmes? Suggestions?
+* [Informations générales](##Informations-générales)
+* [Téchnology](##Téchnology)
+* [Installer](##Installer)
+* [Fonctionnalités](##Fonctionnalités) 
+* [Questions? Problèmes? Suggestions?](##Questions? Problèmes? Suggestions?)
 
 ## Informations générales
 C’est un projet désire un site simple gérer les produits.
