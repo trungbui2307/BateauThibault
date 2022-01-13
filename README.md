@@ -5,7 +5,7 @@ BateauThibault
 * [Informations générales](##Informations-générales)
 * [Téchnology](##Téchnology)
 * [Installer](##Installer)
-* [Fonctionnalités](##Fonctionnalités) 
+* [Fonctionnalités](#Fonctionnalités) 
 * [Questions? Problèmes? Suggestions?](##Questions? Problèmes? Suggestions?)
 
 ## Informations générales
