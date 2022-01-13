@@ -6,8 +6,7 @@ BateauThibault
 * [Téchnology](#Téchnology)
 * [Installer](#Installer)
 * [Fonctionnalités](#Fonctionnalités) 
-* [Questions? Problèmes? Suggestions?](#Questions?-Problèmes?-Suggestions?) 
-* [Questions? Problèmes? Suggestions?](#Questions?-Problèmes?-Suggestions?)
+* [Questions? Problèmes? Suggestions?](#Questions-Problèmes-Suggestions)
 
 ## Informations générales
 C’est un projet désire un site simple gérer les produits.
