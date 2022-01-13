@@ -2,7 +2,7 @@
 BateauThibault
 
 # Table of contents 
-* [Informations générales](##Informations-générales)
+* [Informations générales](#Informations-générales)
 * [Téchnology](#Téchnology)
 * [Installer](#Installer)
 * [Fonctionnalités](#Fonctionnalités) 
