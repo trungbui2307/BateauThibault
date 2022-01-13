@@ -9,6 +9,9 @@ BateauThibault
 * Contribuer
 * Questions? Problèmes? Suggestions?
 
+## Informations générales
+C’est un projet désire un site simple gérer les produits.
 
- #Informations générales
- 
+## Téchnology
+
+
