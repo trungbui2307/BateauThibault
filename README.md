@@ -24,6 +24,6 @@ Langages:
     
 ## Installer
 Pour exécuter ce projet, installez-le localement à l'aide de npm :
-$npm install
-$cd FrontendAngular.
-$ng serve
+$ npm install
+$ cd FrontendAngular.
+$ ng serve
