@@ -44,9 +44,11 @@ export class DetailsProductComponent implements OnInit {
       return;
       
     let putProductOnSale: PutProductOnSale = {
-      id: this.selectedProduct.id,
       discount: sale
     }
-    this.productService.putProduct(putProductOnSale);
+    this.productService.putProduct(this.selectedProduct.id,putProductOnSale).subscribe((res:PutProductOnSale) => {
+      
+    });
+    console.log("Clicked ", sale);
   }
 }
