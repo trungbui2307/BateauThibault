@@ -3,6 +3,7 @@ import {
   Product,
   ProductService,
   PutProductOnSale,
+  StockProduct,
 } from 'src/app/core/product.service';
 
 @Component({
@@ -15,9 +16,10 @@ export class DetailsProductComponent implements OnInit {
 
   public products: Product[] = [];
   public selectedProduct: Product | undefined = undefined;
-  percent = 0;
+  public percent = 0;
+  public quantityStock = 0;
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
     this.getProducts();
@@ -67,17 +69,56 @@ export class DetailsProductComponent implements OnInit {
         this.products.splice(index, 1, this.selectedProduct)
       });
     this.percent = 0;
-    //this.reloadData();
   }
 
-  onChangePercent(event: any){
+  public updateQuantityStock() {
+    let quantity: number | null = this.quantityStock;
+
+    if (this.selectedProduct == undefined || quantity == null || quantity == 0)
+      return;
+
+    let putIncrementStockProduct: StockProduct = {
+      number: quantity,
+    };    
+    if (quantity > 0) {
+      this.productService
+      .putIncrementQuantityStockProduct(this.selectedProduct.id, putIncrementStockProduct)
+      .subscribe((res: StockProduct) => {
+        if (this.selectedProduct) {
+          let currentQuantityStock = this.selectedProduct.quantityInStock;
+          this.selectedProduct = {
+            ...this.selectedProduct!,
+            quantityInStock: currentQuantityStock + putIncrementStockProduct.number,
+          };
+          const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
+          this.products.splice(index, 1, this.selectedProduct)
+        }
+      });
+    } else {
+      putIncrementStockProduct.number *= -1;
+      this.productService
+      .putDecrementQuantityStockProduct(this.selectedProduct.id, putIncrementStockProduct)
+      .subscribe((res: StockProduct) => {
+        if (this.selectedProduct) {
+          let currentQuantityStock = this.selectedProduct.quantityInStock;
+          this.selectedProduct = {
+            ...this.selectedProduct!,
+            quantityInStock: currentQuantityStock - putIncrementStockProduct.number,
+          };
+          const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
+          this.products.splice(index, 1, this.selectedProduct)
+        }
+      });
+    }
+    
+    this.quantityStock = 0;
+  }
+
+  onChangePercent(event: any) {
     this.percent = event.target.value
   }
 
-  private async reloadData() {
-    await this.getProducts();
-    if (this.selectedProduct != undefined) {
-      this.selectedProduct = this.getProduct(this.selectedProduct.id);
-    }
+  public onChangeQuantityStock(event: any) {
+    this.quantityStock = event.target.value;
   }
 }

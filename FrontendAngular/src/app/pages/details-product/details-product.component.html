@@ -39,9 +39,26 @@
             </button>
           </div>
         </div>
-        <p style="margin-top: 2rem">
-          Quantite en stock: {{ this.selectedProduct.quantityInStock }}
-        </p>
+
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+          <span fxLayout="column">
+            Quantite en stock: {{ this.selectedProduct.quantityInStock }}
+          </span>
+          <input
+            [value]="quantityStock"
+            (change)="onChangeQuantityStock($event)"
+            style="width: 55px; height: 30px"
+            fxLayout="column"
+            type="number"
+            id="quantityStock"
+            step="1"
+          />
+          <div fxLayout="column">
+            <button mat-raised-button color="primary" (click)="updateQuantityStock()">
+              Modifier Quantite
+            </button>
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
