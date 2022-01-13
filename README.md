@@ -13,10 +13,10 @@ C’est un projet désire un site simple gérer les produits.
 
 ## Téchnology
 Projet est créé avec:
-### Framework:
+#### Framework:
     * Django
     * Angular
-### Langages:
+#### Langages:
     * Python
     * Typescipt
     * Html/css
