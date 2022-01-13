@@ -26,8 +26,20 @@ export class ProductService {
     );
   }
 
-  public putIncrementQuantityStockProduct(id: number, nbProduct: IncrementStockProduct): Observable<IncrementStockProduct> {
-    return this.http.put<IncrementStockProduct>(this.API_URL + "/incrementStock/" + id + "/", nbProduct,
+  public putIncrementQuantityStockProduct(id: number, nbProduct: StockProduct): Observable<StockProduct> {
+    nbProduct.number = Number(nbProduct.number)
+    return this.http.put<StockProduct>(this.API_URL + "/incrementStock/" + id + "/", nbProduct,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
+    );
+  }
+
+  public putDecrementQuantityStockProduct(id: number, nbProduct: StockProduct): Observable<StockProduct> {
+    nbProduct.number = Number(nbProduct.number)
+    return this.http.put<StockProduct>(this.API_URL + "/decrementStock/" + id + "/", nbProduct,
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
@@ -57,6 +69,6 @@ export interface PutProductOnSale {
   discount: number,
 }
 
-export interface IncrementStockProduct {
+export interface StockProduct {
   number: number,
 }
