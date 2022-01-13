@@ -6,7 +6,7 @@ BateauThibault
 * [Téchnology](#Téchnology)
 * [Installer](#Installer)
 * [Fonctionnalités](#Fonctionnalités) 
-* [Questions? Problèmes? Suggestions?](#Fonctionnalités) 
+* [Questions? Problèmes? Suggestions?](#Questions?-Problèmes?-Suggestions?) 
 * [Questions? Problèmes? Suggestions?](#Questions?-Problèmes?-Suggestions?)
 
 ## Informations générales
