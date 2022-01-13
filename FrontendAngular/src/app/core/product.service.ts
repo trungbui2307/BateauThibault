@@ -12,17 +12,27 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  public getProductsFromJson():Observable<Product[]> {
+  public getProductsFromJson(): Observable<Product[]> {
     return this.http.get<Product[]>(this.API_URL + "/infoproducts"); // Get /inforproducts "../assets/data/products.json"
   }
 
   public putProduct(id: number, product: PutProductOnSale): Observable<PutProductOnSale> {
-    return this.http.put<PutProductOnSale>(this.API_URL + "/putonsale/"+id+"/", product, 
+    return this.http.put<PutProductOnSale>(this.API_URL + "/putonsale/" + id + "/", product,
       {
         headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    }
+          'Content-Type': 'application/json'
+        })
+      }
+    );
+  }
+
+  public putIncrementQuantityStockProduct(id: number, nbProduct: IncrementStockProduct): Observable<IncrementStockProduct> {
+    return this.http.put<IncrementStockProduct>(this.API_URL + "/incrementStock/" + id + "/", nbProduct,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
     );
   }
 }
@@ -35,7 +45,7 @@ export interface Product {
   discount: number,
   comments: string,
   owner: string,
-  price:number,
+  price: number,
   price_on_sale: number,
   sale: boolean,
   availability: boolean,
@@ -45,4 +55,8 @@ export interface Product {
 
 export interface PutProductOnSale {
   discount: number,
+}
+
+export interface IncrementStockProduct {
+  number: number,
 }

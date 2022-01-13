@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
+  IncrementStockProduct,
   Product,
   ProductService,
   PutProductOnSale,
@@ -15,9 +16,10 @@ export class DetailsProductComponent implements OnInit {
 
   public products: Product[] = [];
   public selectedProduct: Product | undefined = undefined;
-  percent = 0;
+  public percent = 0;
+  public quantityStock = 0;
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
     this.getProducts();
@@ -70,8 +72,43 @@ export class DetailsProductComponent implements OnInit {
     //this.reloadData();
   }
 
-  onChangePercent(event: any){
+  public updateQuantityStock() {
+    let quantity: number | null = this.quantityStock;
+
+    if (
+      this.selectedProduct == undefined ||
+      quantity == null ||
+      quantity < 0
+    )
+      return;
+
+    let putIncrementStockProduct: IncrementStockProduct = {
+      number: quantity,
+    };
+    console.log(this.selectedProduct.id);
+    this.productService
+      .putIncrementQuantityStockProduct(this.selectedProduct.id, putIncrementStockProduct)
+      .subscribe((res: IncrementStockProduct) => {
+        if (this.selectedProduct) {
+          let currentQuantityStock = this.selectedProduct.quantityInStock;
+          this.selectedProduct = {
+            ...this.selectedProduct!,
+            quantityInStock: res.number//currentQuantityStock + res.number,
+          };
+          const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
+          this.products.splice(index, 1, this.selectedProduct)
+        }
+      });
+      console.log(this.selectedProduct.quantityInStock);
+    this.quantityStock = 0;
+  }
+
+  onChangePercent(event: any) {
     this.percent = event.target.value
+  }
+
+  public onChangeQuantityStock(event: any) {
+    this.quantityStock = event.target.value;
   }
 
   private async reloadData() {
