@@ -1,27 +1,47 @@
 <div class="detail-product-container">
-    <h3>Veuillez saisir le produit dont vous voulez les informations</h3>
+  <h3>Veuillez saisir le produit dont vous voulez les informations</h3>
   <mat-form-field appearance="fill">
     <mat-label>Selectez Produit</mat-label>
     <mat-select (selectionChange)="onSelectProductChange($event)">
-        <mat-option *ngFor="let product of products" [value]="product.id">
-            {{ product.name }}
-        </mat-option>
+      <mat-option *ngFor="let product of products" [value]="product.id">
+        {{ product.name }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <mat-card class="dp-card-container" *ngIf="this.selectedProduct !== undefined">
-    <mat-card-title>{{ this.selectedProduct.name }}</mat-card-title>
-    <mat-divider inset></mat-divider>
-    <mat-card-content>
-      <p>Prix: {{ this.selectedProduct.price }} euros</p>
-      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-        <p fxLayout="column">Promotion: {{ this.selectedProduct.discount }} %</p>        
-        <input #dpInput style="width:55px;height:30px;" fxLayout="column" type="number" id="salepercent">
-        <mat-card-actions fxLayout="column">
-            <button mat-raised-button color="primary" (click)="updateSale()">Modifier Promotion</button>
-          </mat-card-actions>
-      </div>  
-      <p>Quantite en stock: {{ this.selectedProduct.quantityInStock*10 }}</p>     
-    </mat-card-content>
-  </mat-card>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <mat-card
+      class="dp-card-container"
+      *ngIf="this.selectedProduct !== undefined"
+    >
+      <mat-card-title>{{ this.selectedProduct.name }}</mat-card-title>
+      <mat-divider inset></mat-divider>
+      <mat-card-content>
+        <p>Prix: {{ this.selectedProduct.price }} euros</p>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+          <span fxLayout="column">
+            Promotion: {{ this.selectedProduct.discount * 100 }} %
+          </span>
+          <input
+            #dpInput
+            style="width: 55px; height: 30px"
+            fxLayout="column"
+            type="number"
+            id="salepercent"
+            min="0"
+            step="1"
+            max="100"
+          />
+          <div fxLayout="column">
+            <button mat-raised-button color="primary" (click)="updateSale()">
+              Modifier Promotion
+            </button>
+          </div>
+        </div>
+        <p style="margin-top: 2rem;">
+          Quantite en stock: {{ this.selectedProduct.quantityInStock * 10 }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

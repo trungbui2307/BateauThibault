@@ -40,16 +40,19 @@ export class DetailsProductComponent implements OnInit {
   public updateSale() {
     let sale: number | null = this.dpInput?.nativeElement.value;
 
-    if (this.selectedProduct == undefined || sale == null || sale < 0 || sale > 1)
+    if (this.selectedProduct == undefined || sale == null || sale < 0 || sale > 100)
       return;
       
     let putProductOnSale: PutProductOnSale = {
-      discount: sale
+      discount: sale / 100
     }
     this.productService.putProduct(this.selectedProduct.id,putProductOnSale).subscribe((res:PutProductOnSale) => {
-
+      this.selectedProduct = {
+        ...this.selectedProduct!,
+        discount: res.discount
+      }
     });
-    this.reloadData();
+    //this.reloadData();
   }
 
   private async reloadData() {
