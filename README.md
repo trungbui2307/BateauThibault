@@ -3,10 +3,10 @@ BateauThibault
 
 # Table of contents 
 * [Informations générales](##Informations-générales)
-* [Téchnology](##Téchnology)
-* [Installer](##Installer)
+* [Téchnology](#Téchnology)
+* [Installer](#Installer)
 * [Fonctionnalités](#Fonctionnalités) 
-* [Questions? Problèmes? Suggestions?](##Questions? Problèmes? Suggestions?)
+* [Questions? Problèmes? Suggestions?](#Questions? Problèmes? Suggestions?)
 
 ## Informations générales
 C’est un projet désire un site simple gérer les produits.
