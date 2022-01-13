@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 
@@ -14,6 +14,16 @@ export class ProductService {
 
   public getProductsFromJson():Observable<Product[]> {
     return this.http.get<Product[]>(this.API_URL + "/infoproducts"); // Get /inforproducts "../assets/data/products.json"
+  }
+
+  public putProduct(product: PutProductOnSale): Observable<PutProductOnSale> {
+    return this.http.put<PutProductOnSale>(this.API_URL + "/infoproduct/"+product.id, product, 
+      {
+        headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    }
+    );
   }
 }
 
@@ -31,4 +41,9 @@ export interface Product {
   availability: boolean,
   quantity_stock: number,
   quantity_sold: number,
+}
+
+export interface PutProductOnSale {
+  id: number,
+  discount: number,
 }
