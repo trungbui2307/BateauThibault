@@ -13,5 +13,17 @@ BateauThibault
 C’est un projet désire un site simple gérer les produits.
 
 ## Téchnology
-
-
+Projet est créé avec:
+Framework:
+    Django
+    Angular
+Langages:
+    Python
+    Typescipt
+    Html/css
+    
+## Installer
+Pour exécuter ce projet, installez-le localement à l'aide de npm :
+$npm install
+$cd FrontendAngular.
+$ng serve
