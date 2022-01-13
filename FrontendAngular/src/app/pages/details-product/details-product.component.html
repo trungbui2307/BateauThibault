@@ -23,7 +23,8 @@
             Promotion: {{ this.selectedProduct.discount * 100 }} %
           </span>
           <input
-            #dpInput
+            [value]="percent"
+            (change)="onChangePercent($event)"
             style="width: 55px; height: 30px"
             fxLayout="column"
             type="number"
@@ -38,7 +39,7 @@
             </button>
           </div>
         </div>
-        <p style="margin-top: 2rem;">
+        <p style="margin-top: 2rem">
           Quantite en stock: {{ this.selectedProduct.quantityInStock * 10 }}
         </p>
       </mat-card-content>
