@@ -90,6 +90,7 @@ export interface Product {
 
 export interface UpdatedProduct {
   id: number,
+  price_selling?: number,
   discount?: number,
   quantityInStock?: number,
 }

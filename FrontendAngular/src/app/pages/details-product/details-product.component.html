@@ -17,7 +17,67 @@
       <mat-card-title>{{ this.selectedProduct.name }}</mat-card-title>
       <mat-divider inset></mat-divider>
       <mat-card-content>
-        <p>Prix: {{ this.selectedProduct.price }} euros</p>
+
+
+        <table style="width:100%">
+          <tr>
+            <th><span>
+              Prix: {{ this.selectedProduct.price }} euros
+            </span></th>
+            <td><input
+              [value]="checkBox"
+              (change)="onChangePriceSelling($event)"
+              style="width: 20px; height: 20px"
+              type="checkbox"
+              id="priceSelling"
+              step="1"
+            /></td>
+          </tr>
+          <tr>
+            <th><span>
+              Promotion: {{ this.selectedProduct.discount * 100 }} %
+            </span></th>
+            <td><input
+              [value]="percent"
+              (change)="onChangePercent($event)"
+              style="width: 55px; height: 30px"
+              type="number"
+              id="salepercent"
+              min="0"
+              step="1"
+              max="100"
+            /></td>
+          </tr>
+          <tr>
+            <th><span>
+              Quantite: {{ this.selectedProduct.quantityInStock }}
+            </span></th>
+            <td><input
+              [value]="quantityStock"
+              (change)="onChangeQuantityStock($event)"
+              style="width: 55px; height: 30px"
+              type="number"
+              id="quantityStock"
+              step="1"
+            />    </td>
+          </tr>
+        </table>
+<!--
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+          <span fxLayout="column">
+            Prix: {{ this.selectedProduct.price }} euros       || Jeter?
+          </span>
+          <input
+            [value]="checkBox"
+            (change)="onChangePriceSelling($event)"
+            style="width: 20px; height: 20px"
+            fxLayout="column"
+            type="checkbox"
+            id="priceSelling"
+            step="1"
+          />
+        </div>
+
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
           <span fxLayout="column">
             Promotion: {{ this.selectedProduct.discount * 100 }} %
@@ -33,16 +93,11 @@
             step="1"
             max="100"
           />
-          <div fxLayout="column">
-            <button mat-raised-button color="primary" (click)="updateSale()">
-              Modifier Promotion
-            </button>
-          </div>
         </div>
 
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
           <span fxLayout="column">
-            Quantite en stock: {{ this.selectedProduct.quantityInStock }}
+            Quantite: {{ this.selectedProduct.quantityInStock }}
           </span>
           <input
             [value]="quantityStock"
@@ -52,13 +107,11 @@
             type="number"
             id="quantityStock"
             step="1"
-          />
-          <div fxLayout="column">
-            <button mat-raised-button color="primary" (click)="updateQuantityStock()">
-              Modifier Quantite
-            </button>
-          </div>
-        </div>
+          />          
+        </div>-->
+        <button mat-raised-button color="primary" (click)="updateQuantityStock_v2()">
+          Passer la Commande
+        </button>
       </mat-card-content>
     </mat-card>
   </div>
