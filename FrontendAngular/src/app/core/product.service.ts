@@ -81,6 +81,7 @@ export interface Product {
   comments: string,
   owner: string,
   price: number,
+  price_selling: number,
   price_on_sale: number,
   sale: boolean,
   availability: boolean,

@@ -17,12 +17,10 @@
       <mat-card-title>{{ this.selectedProduct.name }}</mat-card-title>
       <mat-divider inset></mat-divider>
       <mat-card-content>
-
-
         <table style="width:100%">
           <tr>
             <th><span>
-              Prix: {{ this.selectedProduct.price }} euros
+              Prix: {{ this.selectedProduct.price_selling }} euros
             </span></th>
             <td><input
               [value]="checkBox"
@@ -33,9 +31,14 @@
               step="1"
             /></td>
           </tr>
+          <tr *ngIf="this.selectedProduct.sale">
+            <th><span>
+              Prix de Promotion: {{ this.selectedProduct.price_on_sale }} euros
+            </span></th>            
+          </tr>
           <tr>
             <th><span>
-              Promotion: {{ this.selectedProduct.discount * 100 }} %
+              Promotion: {{ this.selectedProduct.discount }} %
             </span></th>
             <td><input
               [value]="percent"

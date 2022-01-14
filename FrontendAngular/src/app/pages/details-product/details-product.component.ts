@@ -46,10 +46,10 @@ export class DetailsProductComponent implements OnInit {
   public onSelectProductChange(ob: any): void {
     this.selectedProduct = this.getProduct(ob.value);
     if (this.selectedProduct)
-      this.priceSelling = this.selectedProduct?.price;
+      this.priceSelling = this.selectedProduct?.price_selling;
   }
 
-  public updateSale() {
+  /*public updateSale() {
     let sale: number | null = this.percent;
 
     if (
@@ -74,15 +74,20 @@ export class DetailsProductComponent implements OnInit {
         this.products.splice(index, 1, this.selectedProduct)
       });
     this.percent = 0;
-  }
+  }*/
 
   public updateQuantityStock_v2() {
     if (this.selectedProduct == undefined || this.quantityStock == null)
       return;
 
+    if (this.percent < 0 || this.percent > 100) {
+      alert("Le pourcentage de promotion doit etre entre 0 et 100");
+      this.percent = 0;
+      return;
+    }
+
     let currentQuantityStock:number = this.selectedProduct.quantity_in_stock + Number(this.quantityStock);
-    console.log(this.selectedProduct.quantity_in_stock);
-    console.log(currentQuantityStock);
+    console.log(this.selectedProduct.price_on_sale);
     let putProduct: UpdatedProduct[] = [{
       id: this.selectedProduct.id,
       price_selling: this.priceSelling,
@@ -104,7 +109,7 @@ export class DetailsProductComponent implements OnInit {
       });
   }
 
-  public updateQuantityStock_v1() {
+  /*public updateQuantityStock_v1() {
     let quantity: number | null = this.quantityStock;
 
     if (this.selectedProduct == undefined || quantity == null || quantity == 0)
@@ -145,7 +150,7 @@ export class DetailsProductComponent implements OnInit {
     }
     
     this.quantityStock = 0;
-  }
+  }*/
 
   onChangePercent(event: any) {
     this.percent = event.target.value
@@ -156,14 +161,13 @@ export class DetailsProductComponent implements OnInit {
   }
 
   public onChangePriceSelling(event: any) {
-    //this.priceSelling = event.target.value;
     this.checkBox = !this.checkBox;
     if (!this.selectedProduct)
       return;
     if (this.checkBox) {
-      this.selectedProduct.price = 0;
+      this.selectedProduct.price_selling = 0;
     } else {
-      this.selectedProduct.price = this.priceSelling;
+      this.selectedProduct.price_selling = this.priceSelling;
     }
   }
 }
