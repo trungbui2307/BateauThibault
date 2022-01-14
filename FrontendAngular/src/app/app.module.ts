@@ -20,6 +20,7 @@ import { ManageStockComponent } from './pages/manage-stock/manage-stock.componen
 import { CardComponent } from './features/card/card.component';
 import { ProductService } from './core/product.service';
 import { HttpClientModule } from '@angular/common/http';
+import { FooterComponent } from './features/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { HttpClientModule } from '@angular/common/http';
     HeaderComponent,
     DetailsProductComponent,
     ManageStockComponent,
-    CardComponent
+    CardComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

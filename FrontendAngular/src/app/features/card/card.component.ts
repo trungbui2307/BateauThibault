@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ProductService } from 'src/app/core/product.service';
 
 @Component({
   selector: 'app-card',
@@ -12,7 +13,7 @@ export class CardComponent implements OnInit {
   @Input() public content: string = '';
   @Output() subjectClickEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
   }
@@ -21,6 +22,7 @@ export class CardComponent implements OnInit {
     this.subjectClickEvent.emit({
       id: this.cardId
     });
+    this.productService.onChangeMenuTab(this.cardId + 1);
   }
 
 }
