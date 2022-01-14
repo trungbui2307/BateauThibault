@@ -80,14 +80,14 @@ export class DetailsProductComponent implements OnInit {
     if (this.selectedProduct == undefined || this.quantityStock == null)
       return;
 
-    let currentQuantityStock:number = this.selectedProduct.quantityInStock + Number(this.quantityStock);
-    console.log(this.selectedProduct.quantityInStock);
+    let currentQuantityStock:number = this.selectedProduct.quantity_in_stock + Number(this.quantityStock);
+    console.log(this.selectedProduct.quantity_in_stock);
     console.log(currentQuantityStock);
     let putProduct: UpdatedProduct[] = [{
       id: this.selectedProduct.id,
       price_selling: this.priceSelling,
       discount: this.percent,
-      quantityInStock: currentQuantityStock,      
+      quantity_in_stock: currentQuantityStock,      
     }];
 
     this.productService
@@ -96,7 +96,7 @@ export class DetailsProductComponent implements OnInit {
         if (this.selectedProduct) {          
           this.selectedProduct = {
             ...this.selectedProduct!,
-            quantityInStock: currentQuantityStock
+            quantity_in_stock: currentQuantityStock
           };
           const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
           this.products.splice(index, 1, this.selectedProduct)
@@ -118,10 +118,10 @@ export class DetailsProductComponent implements OnInit {
       .putIncrementQuantityStockProduct(this.selectedProduct.id, putIncrementStockProduct)
       .subscribe((res: StockProduct) => {
         if (this.selectedProduct) {
-          let currentQuantityStock = this.selectedProduct.quantityInStock;
+          let currentQuantityStock = this.selectedProduct.quantity_in_stock;
           this.selectedProduct = {
             ...this.selectedProduct!,
-            quantityInStock: currentQuantityStock + putIncrementStockProduct.number,
+            quantity_in_stock: currentQuantityStock + putIncrementStockProduct.number,
           };
           const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
           this.products.splice(index, 1, this.selectedProduct)
@@ -133,10 +133,10 @@ export class DetailsProductComponent implements OnInit {
       .putDecrementQuantityStockProduct(this.selectedProduct.id, putIncrementStockProduct)
       .subscribe((res: StockProduct) => {
         if (this.selectedProduct) {
-          let currentQuantityStock = this.selectedProduct.quantityInStock;
+          let currentQuantityStock = this.selectedProduct.quantity_in_stock;
           this.selectedProduct = {
             ...this.selectedProduct!,
-            quantityInStock: currentQuantityStock - putIncrementStockProduct.number,
+            quantity_in_stock: currentQuantityStock - putIncrementStockProduct.number,
           };
           const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
           this.products.splice(index, 1, this.selectedProduct)
