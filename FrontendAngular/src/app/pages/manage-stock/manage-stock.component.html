@@ -1,1 +1,117 @@
-<p>manage-stock works!</p>
+<div
+  class="manage-stock-container"
+  style="
+    display: flex;
+    flex-direction: column;
+    justify-items: stretch;
+    gap: 32px;
+    padding: 2rem 3rem;
+    max-width: 100%;
+    overflow-x: auto;
+  "
+>
+  <div
+    *ngFor="let i of [0, 1, 2]"
+    style="
+      display: flex;
+      flex-direction: column;
+      justify-items: stretch;
+      gap: 32px;
+      padding: 2rem 3rem;
+    "
+  >
+    <h2 style="text-align: center; margin-bottom: 0">{{ getTableName(i) }}</h2>
+    <table mat-table [dataSource]="getDataSource(i)" class="mat-elevation-z8">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nom</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+
+      <!-- Price Column -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Prix</th>
+        <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+      </ng-container>
+
+      <!-- Discount ammount Column -->
+      <ng-container matColumnDef="discount">
+        <th mat-header-cell *matHeaderCellDef>Promotion</th>
+        <td mat-cell *matCellDef="let element">{{ element.discount }}</td>
+      </ng-container>
+
+      <!-- Quantity Column -->
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Quantité</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.quantity || "0" }}
+        </td>
+      </ng-container>
+
+      <!-- Quantity sold Column -->
+      <ng-container matColumnDef="quantity_sold">
+        <th mat-header-cell *matHeaderCellDef>Vendus</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.quantity_sold || "0" }}
+        </td>
+      </ng-container>
+
+      <!-- Quantity in stock Column -->
+      <ng-container matColumnDef="quantityInStock">
+        <th mat-header-cell *matHeaderCellDef>Quantité en stock</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.quantityInStock || "0" }}
+        </td>
+      </ng-container>
+
+      <!-- Comment Column -->
+      <ng-container matColumnDef="comments">
+        <th mat-header-cell *matHeaderCellDef>Commentaires</th>
+        <td mat-cell *matCellDef="let element">{{ element.comments }}</td>
+      </ng-container>
+
+      <!-- Add stock Column -->
+      <ng-container matColumnDef="addStock">
+        <th mat-header-cell *matHeaderCellDef>Ajout Stock</th>
+        <td mat-cell *matCellDef="let element">
+          <input
+            #addStockInput
+            (change)="addStock(element.id, addStockInput.value)"
+            addStockInput
+            mat-input
+            placeholder="Quantité"
+            type="number"
+          />
+        </td>
+      </ng-container>
+
+      <!-- Add promo Column -->
+      <ng-container matColumnDef="addPromo">
+        <th mat-header-cell *matHeaderCellDef>Ajout Promo</th>
+        <td mat-cell *matCellDef="let element">
+          <input
+            #addPromoInput
+            (change)="addPromo(element.id, addPromoInput.value)"
+            mat-input
+            placeholder="%"
+            type="number"
+          />
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+  <button
+    mat-raised-button
+    style="margin-bottom: 40rem"
+    color="primary"
+    (click)="updateProducts()"
+  >
+    Modifier Stock
+  </button>
+</div>
