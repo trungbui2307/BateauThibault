@@ -34,7 +34,7 @@ $ ng serve
 * Modification du stock
 * Modification du pourcentage de promotion
 * Calcul de chiffre d’affaire
-* ...
+* ... and more!
 
 ## Questions? Problèmes? Suggestions?
 * Rapporter un bug ou request fonctionnalité, veuillez vous assurer que quelqu'un d'autre n'a pas créé de problème pour le même sujet.
