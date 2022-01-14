@@ -1,9 +1,11 @@
+from django.http import Http404
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import ProductSerializer, ProductDetailSerializer
-from .models import Product
+from .models import Product, Transaction
+from datetime import datetime
 
 class ProductListAPIView(APIView):
     serializer_class = ProductSerializer
@@ -34,19 +36,48 @@ class ProductRetrieveAPIView(APIView):
 class ProductUpdateAPIView(APIView):
     serializer_class = ProductSerializer
 
+    def get_object(self, id):
+        try:
+            return Product.objects.get(id=id)
+        except Product.DoesNotExist:
+            raise Http404
+
+    def save_transaction(self, product, quantityRetrait):
+        print(f"Here")
+        transaction = Transaction()
+        transaction.product = product
+        transaction.date = str(datetime.now())
+        transaction.quantity_retrait = quantityRetrait
+        mul = 10.0 * 10.0
+        print(mul)
+        if product.sale is True:
+            amount_total = float(quantityRetrait) * float(product.price_on_sale)
+            print(f"{float(quantityRetrait)} * {float(product.price_on_sale)} = {amount_total}")
+        else:
+            amount_total = float(quantityRetrait) * float(product.price_selling)
+            print(f"{type(quantityRetrait)} et {type(product.price_on_sale)}")
+            print(f"{float(quantityRetrait)} * {product.price} = {amount_total}")
+        transaction.amount_total = 100
+        transaction.save()
+
     def put(self, request, *args, **kwargs):
         try:
             products = []
             if request.method == "PUT" and request.data:
                 for prod in request.data:
-                    id = prod["id"]
-                    product = Product.objects.get(id=id)
+                    product = self.get_object(prod["id"])
+                    quantityInStock = product.quantity_in_stock
                     for key, val in prod.items():
                         if key in product.__dict__:
                             product.__dict__[key] = val
+
+                    if product.quantity_in_stock < quantityInStock:
+                        quantityRetrait = quantityInStock - product.quantity_in_stock
+                        print("Here")
+                        self.save_transaction(product, quantityRetrait)
+
                     product.save()
                     products.append(product)
-
             serializer = ProductSerializer(products, many=True)
         except:
             print("Can't find any product")
