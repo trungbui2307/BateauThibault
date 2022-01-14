@@ -16,7 +16,7 @@ Projet est créé avec:
 #### Framework:
     * Django
     * Angular
-   * Voir plus ici [Frontend Angular](https://github.com/cfa-2022/BateauThibault/tree/develop/FrontendAngular)
+   * Voir plus ici [Frontend Angular](https://github.com/cfa-2022/BateauThibault/tree/develop/FrontendAngular#readme)
 #### Langages:
     * Python
     * Typescipt
