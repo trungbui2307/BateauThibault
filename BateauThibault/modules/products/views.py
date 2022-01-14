@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from .serializers import ProductSerializer, ProductDetailSerializer, TransactionSerializer
 from .models import Product, Transaction
 from datetime import datetime
+from rest_framework import generics
+from time import time
 
 class ProductListAPIView(APIView):
     serializer_class = ProductSerializer
@@ -45,7 +47,7 @@ class ProductUpdateAPIView(APIView):
     def save_transaction(self, product, quantityRetrait):
         transaction = Transaction()
         transaction.product = product
-        transaction.date = str(datetime.now())
+        transaction.selling_date = str(datetime.now())
         transaction.selling_quantity = quantityRetrait
         if product.sale is True:
             transaction.amount_total = quantityRetrait * product.price_on_sale
@@ -72,7 +74,8 @@ class ProductUpdateAPIView(APIView):
                     product.save()
                     products.append(product)
             serializer = ProductSerializer(products, many=True)
-        except:
+        except UnboundLocalError as e:
+            print(e)
             print("Can't find any product")
 
         return Response(serializer.data)
@@ -99,15 +102,21 @@ class TransactionRetrieveAPIView(APIView):
     def get_queryset(self):
         queryset = Transaction.objects.all()
         startDate = self.request.query_params.get('start_date')
+        startDate = datetime.strptime(startDate + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
         endDate = self.request.query_params.get('end_date')
-        if startDate and endDate:
-            queryset = Transaction.objects.filter(selling_date=startDate)
-            #queryset = Transaction.objects.filter(selling_date__range=[startDate, endDate])
+        endDate = datetime.strptime(endDate + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
+        queryset = Transaction.objects.filter(selling_date__range=[startDate, endDate])
         return queryset
 
-    def get(self):
-        transaction = self.get_queryset()
-        print(transaction)
+    def get(self, request, *args, **kwargs):
+        try:
+            transaction = self.get_queryset()
+            somme = 0
+            for trans in transaction:
+                somme += trans.amount_total
+        except:
+            print("Something broken")
+        return Response({'income': somme})
 
 
 
