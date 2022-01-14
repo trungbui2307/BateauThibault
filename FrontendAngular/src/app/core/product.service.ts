@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
 
-  public API_URL: string = "http://localhost:8000";
+  public API_URL: string = "http://localhost:8000/api/v1";
 
   constructor(private http: HttpClient) { }
 
@@ -18,6 +18,16 @@ export class ProductService {
 
   public putProduct(id: number, product: PutProductOnSale): Observable<PutProductOnSale> {
     return this.http.put<PutProductOnSale>(this.API_URL + "/putonsale/" + id + "/", product,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
+    );
+  }
+
+  public updateProducts(products: UpdatedProduct[]): Observable<Product[]> {
+    return this.http.put<Product[]>(this.API_URL + "/products/", products,
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
@@ -63,6 +73,12 @@ export interface Product {
   availability: boolean,
   quantityInStock: number,
   quantity_sold: number,
+}
+
+export interface UpdatedProduct {
+  id: number,
+  discount?: number,
+  quantityInStock?: number,
 }
 
 export interface PutProductOnSale {
