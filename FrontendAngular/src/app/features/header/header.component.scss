@@ -1,7 +1,10 @@
 
+$primaryColor: #3f51b5;
+$menu-bottom-border: solid 8px silver;
+
 .header-containter {
     text-align: center;
-    background-color:black;
+    background-color: $primaryColor;
     font-family: Arial, Helvetica, sans-serif;
 
     > div {
@@ -11,14 +14,17 @@
     }
 
     >div:hover {
-        background-color:steelblue;
+        .elementdefault{
+            border-bottom: $menu-bottom-border;
+        }
     }
 }
 
 .elementclicked {
-    background-color:blue;
+    border-bottom: $menu-bottom-border;
+    cursor: pointer;
 }
 
 .elementdefault {
-    background-color: black;
+    cursor: pointer;
 }
