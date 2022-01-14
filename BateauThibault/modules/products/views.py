@@ -64,6 +64,11 @@ class ProductUpdateAPIView(APIView):
                     quantityInStock = product.quantity_in_stock
 
                     for key, val in prod.items():
+                        if key == "discount":
+                            product.sale = True
+                            product.discount = val
+                            sale = val/100 * product.price_selling
+                            product.price_on_sale = product.price_selling - sale
                         if key in product.__dict__:
                             product.__dict__[key] = val
 
