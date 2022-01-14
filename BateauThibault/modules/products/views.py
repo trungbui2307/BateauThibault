@@ -31,15 +31,17 @@ class ProductRetrieveAPIView(APIView):
             serializer = ProductSerializer(product)
             return Response(serializer.data)
 
-class ProductDiscountAPIView(APIView):
+class ProductUpdateAPIView(APIView):
     serializer_class = ProductSerializer
 
-    def put(self, request, id, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
         try:
-            if id != None and request.method == "PUT":
+            if request.method == "PUT" and request.data["id"]:
+                id = request.data["id"]
                 product = Product.objects.get(id=id)
-                product.sale = True
-                product.discount = request.data['discount']
+                for key, val in request.data.items():
+                    if key in product.__dict__:
+                        product.__dict__[key] = val
                 product.save()
                 serializer = ProductSerializer(product)
         except:
@@ -68,6 +70,7 @@ class ProductIncrementStockAPIView(APIView):
 
     def put(self, request, id, *args, **kwargs):
         try:
+            print(request.data)
             if id != None and request.method == "PUT":
                 product = Product.objects.get(id=id)
                 number = request.data["number"]
