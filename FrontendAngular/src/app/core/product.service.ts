@@ -10,7 +10,20 @@ export class ProductService {
 
   public API_URL: string = "http://localhost:8000";
 
+  public currentMenuTab: any = [true, false, false];
+
   constructor(private http: HttpClient) { }
+
+  public resetMenuTabs(): void {
+    for(let i = 0;i < 3; i++) {
+      this.currentMenuTab[i] = false;
+    }
+  }
+
+  public onChangeMenuTab(id: number): void {
+    this.resetMenuTabs();
+    this.currentMenuTab[id] = true;
+  }
 
   public getProductsFromJson(): Observable<Product[]> {
     return this.http.get<Product[]>(this.API_URL + "/infoproducts"); // Get /inforproducts "../assets/data/products.json"
