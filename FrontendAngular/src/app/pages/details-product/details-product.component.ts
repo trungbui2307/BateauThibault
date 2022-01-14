@@ -90,8 +90,8 @@ export class DetailsProductComponent implements OnInit {
     console.log(this.selectedProduct.price_on_sale);
     let putProduct: UpdatedProduct[] = [{
       id: this.selectedProduct.id,
-      price_selling: this.priceSelling,
-      discount: this.percent,
+      price_selling: Number(this.priceSelling),
+      discount: Number(this.percent),
       quantity_in_stock: currentQuantityStock,      
     }];
 

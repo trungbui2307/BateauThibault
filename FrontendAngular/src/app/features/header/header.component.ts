@@ -29,6 +29,12 @@ export class HeaderComponent implements OnInit {
       title: "Gerer les produits", 
       path: "stock",
       isClicked: this.produitService.currentMenuTab[2]
+    },
+    {
+      id: 3,
+      title: "Donnees Historiques", 
+      path: "data",
+      isClicked: this.produitService.currentMenuTab[3]
     }
   ]
 

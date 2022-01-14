@@ -21,6 +21,7 @@ import { CardComponent } from './features/card/card.component';
 import { ProductService } from './core/product.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from './features/footer/footer.component';
+import { HistoricalDataComponent } from './pages/historical-data/historical-data.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { FooterComponent } from './features/footer/footer.component';
     DetailsProductComponent,
     ManageStockComponent,
     CardComponent,
-    FooterComponent
+    FooterComponent,
+    HistoricalDataComponent
   ],
   imports: [
     BrowserModule,
