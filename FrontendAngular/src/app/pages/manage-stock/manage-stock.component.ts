@@ -74,13 +74,13 @@ export class ManageStockComponent implements OnInit {
       this.updateData.splice(index, 1, {
         ...this.updateData[index],
         id: elementId,
-        quantityInStock: this.dataSource.find((d) => d.id === elementId)!.quantityInStock! + (+addStockInput),
+        quantityInStock: Math.max(this.dataSource.find((d) => d.id === elementId)!.quantityInStock! + (+addStockInput), 0),
       });
       return;
     }
     this.updateData.push({
       id: elementId,
-      quantityInStock: this.dataSource.find((d) => d.id === elementId)!.quantityInStock! + (+addStockInput),
+      quantityInStock: Math.max(this.dataSource.find((d) => d.id === elementId)!.quantityInStock! + (+addStockInput), 0),
     });
   }
 
