@@ -4,6 +4,7 @@ import {
   ProductService,
   PutProductOnSale,
   StockProduct,
+  UpdatedProduct,
 } from 'src/app/core/product.service';
 
 @Component({
@@ -18,6 +19,8 @@ export class DetailsProductComponent implements OnInit {
   public selectedProduct: Product | undefined = undefined;
   public percent = 0;
   public quantityStock = 0;
+  public priceSelling = 0;
+  public checkBox: boolean = false;
 
   constructor(private productService: ProductService) { }
 
@@ -42,6 +45,8 @@ export class DetailsProductComponent implements OnInit {
 
   public onSelectProductChange(ob: any): void {
     this.selectedProduct = this.getProduct(ob.value);
+    if (this.selectedProduct)
+      this.priceSelling = this.selectedProduct?.price;
   }
 
   public updateSale() {
@@ -71,7 +76,35 @@ export class DetailsProductComponent implements OnInit {
     this.percent = 0;
   }
 
-  public updateQuantityStock() {
+  public updateQuantityStock_v2() {
+    if (this.selectedProduct == undefined || this.quantityStock == null)
+      return;
+
+    let currentQuantityStock:number = this.selectedProduct.quantity_in_stock + Number(this.quantityStock);
+    console.log(this.selectedProduct.quantity_in_stock);
+    console.log(currentQuantityStock);
+    let putProduct: UpdatedProduct[] = [{
+      id: this.selectedProduct.id,
+      price_selling: this.priceSelling,
+      discount: this.percent,
+      quantity_in_stock: currentQuantityStock,      
+    }];
+
+    this.productService
+      .updateProducts(putProduct)
+      .subscribe((res: Product[]) => {
+        if (this.selectedProduct) {          
+          this.selectedProduct = {
+            ...this.selectedProduct!,
+            quantity_in_stock: currentQuantityStock
+          };
+          const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
+          this.products.splice(index, 1, this.selectedProduct)
+        }
+      });
+  }
+
+  public updateQuantityStock_v1() {
     let quantity: number | null = this.quantityStock;
 
     if (this.selectedProduct == undefined || quantity == null || quantity == 0)
@@ -85,10 +118,10 @@ export class DetailsProductComponent implements OnInit {
       .putIncrementQuantityStockProduct(this.selectedProduct.id, putIncrementStockProduct)
       .subscribe((res: StockProduct) => {
         if (this.selectedProduct) {
-          let currentQuantityStock = this.selectedProduct.quantityInStock;
+          let currentQuantityStock = this.selectedProduct.quantity_in_stock;
           this.selectedProduct = {
             ...this.selectedProduct!,
-            quantityInStock: currentQuantityStock + putIncrementStockProduct.number,
+            quantity_in_stock: currentQuantityStock + putIncrementStockProduct.number,
           };
           const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
           this.products.splice(index, 1, this.selectedProduct)
@@ -100,10 +133,10 @@ export class DetailsProductComponent implements OnInit {
       .putDecrementQuantityStockProduct(this.selectedProduct.id, putIncrementStockProduct)
       .subscribe((res: StockProduct) => {
         if (this.selectedProduct) {
-          let currentQuantityStock = this.selectedProduct.quantityInStock;
+          let currentQuantityStock = this.selectedProduct.quantity_in_stock;
           this.selectedProduct = {
             ...this.selectedProduct!,
-            quantityInStock: currentQuantityStock - putIncrementStockProduct.number,
+            quantity_in_stock: currentQuantityStock - putIncrementStockProduct.number,
           };
           const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
           this.products.splice(index, 1, this.selectedProduct)
@@ -120,5 +153,17 @@ export class DetailsProductComponent implements OnInit {
 
   public onChangeQuantityStock(event: any) {
     this.quantityStock = event.target.value;
+  }
+
+  public onChangePriceSelling(event: any) {
+    //this.priceSelling = event.target.value;
+    this.checkBox = !this.checkBox;
+    if (!this.selectedProduct)
+      return;
+    if (this.checkBox) {
+      this.selectedProduct.price = 0;
+    } else {
+      this.selectedProduct.price = this.priceSelling;
+    }
   }
 }

@@ -84,14 +84,15 @@ export interface Product {
   price_on_sale: number,
   sale: boolean,
   availability: boolean,
-  quantityInStock: number,
+  quantity_in_stock: number,
   quantity_sold: number,
 }
 
 export interface UpdatedProduct {
   id: number,
+  price_selling?: number,
   discount?: number,
-  quantityInStock?: number,
+  quantity_in_stock?: number,
 }
 
 export interface PutProductOnSale {
