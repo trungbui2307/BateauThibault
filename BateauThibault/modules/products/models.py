@@ -5,7 +5,6 @@ from django.db import models
 class Product(models.Model):
     name = models.CharField(max_length=20, verbose_name="Name of product", unique=True)
     category = models.IntegerField(default=5, verbose_name="Category", blank=False, null=False)
-    price = models.FloatField(default=0, verbose_name="Price", blank=False, null=False)
     unit = models.CharField(max_length=20, verbose_name="Unit")
     price = models.FloatField(default=0, verbose_name="Price")
     price_selling = models.FloatField(default=0, verbose_name="Price selling")
@@ -31,14 +30,12 @@ class Product(models.Model):
 
 class Transaction(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    date = models.DateTimeField(blank=False, null=False, verbose_name="Date de transaction")
-    quantity_retrait = models.IntegerField(default=0, verbose_name= "Quantite de retrait")
+    selling_date = models.DateTimeField(blank=False, null=False, verbose_name="Date de transaction")
+    selling_quantity = models.IntegerField(default=0, verbose_name= "Quantite de retrait")
     amount_total = models.FloatField(verbose_name="Sum of money")
 
     class Meta:
-        ordering = ('date',)
+        ordering = ('selling_date',)
 
-    """
     def __str__(self):
-        return self.amount_total
-    """
+        return self.product.name

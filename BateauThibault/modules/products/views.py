@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import ProductSerializer, ProductDetailSerializer
+from .serializers import ProductSerializer, ProductDetailSerializer, TransactionSerializer
 from .models import Product, Transaction
 from datetime import datetime
 
@@ -21,7 +21,7 @@ class ProductListAPIView(APIView):
         return Response(serializer.data)
 
 class ProductRetrieveAPIView(APIView):
-    serializer_class = ProductSerializer
+    serializer_class = ProductDetailSerializer
 
     def get(self, request, id, *args, **kwargs):
         try:
@@ -43,21 +43,14 @@ class ProductUpdateAPIView(APIView):
             raise Http404
 
     def save_transaction(self, product, quantityRetrait):
-        print(f"Here")
         transaction = Transaction()
         transaction.product = product
         transaction.date = str(datetime.now())
-        transaction.quantity_retrait = quantityRetrait
-        mul = 10.0 * 10.0
-        print(mul)
+        transaction.selling_quantity = quantityRetrait
         if product.sale is True:
-            amount_total = float(quantityRetrait) * float(product.price_on_sale)
-            print(f"{float(quantityRetrait)} * {float(product.price_on_sale)} = {amount_total}")
+            transaction.amount_total = quantityRetrait * product.price_on_sale
         else:
-            amount_total = float(quantityRetrait) * float(product.price_selling)
-            print(f"{type(quantityRetrait)} et {type(product.price_on_sale)}")
-            print(f"{float(quantityRetrait)} * {product.price} = {amount_total}")
-        transaction.amount_total = 100
+            transaction.amount_total = quantityRetrait * product.price_selling
         transaction.save()
 
     def put(self, request, *args, **kwargs):
@@ -67,14 +60,14 @@ class ProductUpdateAPIView(APIView):
                 for prod in request.data:
                     product = self.get_object(prod["id"])
                     quantityInStock = product.quantity_in_stock
+
                     for key, val in prod.items():
                         if key in product.__dict__:
                             product.__dict__[key] = val
 
                     if product.quantity_in_stock < quantityInStock:
                         quantityRetrait = quantityInStock - product.quantity_in_stock
-                        print("Here")
-                        self.save_transaction(product, quantityRetrait)
+                        self.save_transaction(product, float(quantityRetrait))
 
                     product.save()
                     products.append(product)
@@ -100,40 +93,21 @@ class ProductRemoveAPIView(APIView):
 
         return Response(serializer.data)
 
-class ProductIncrementStockAPIView(APIView):
-    serializer_class = ProductSerializer
+class TransactionRetrieveAPIView(APIView):
+    serializer_class = TransactionSerializer
 
-    def put(self, request, id, *args, **kwargs):
-        try:
-            print(request.data)
-            if id != None and request.method == "PUT":
-                product = Product.objects.get(id=id)
-                number = request.data["number"]
-                product.quantityInStock = product.quantityInStock + number
-                product.save()
-                serializer = ProductSerializer(product)
-        except:
-            print(f"Can't find any product")
+    def get_queryset(self):
+        queryset = Transaction.objects.all()
+        startDate = self.request.query_params.get('start_date')
+        endDate = self.request.query_params.get('end_date')
+        if startDate and endDate:
+            queryset = Transaction.objects.filter(selling_date=startDate)
+            #queryset = Transaction.objects.filter(selling_date__range=[startDate, endDate])
+        return queryset
 
-        return Response(serializer.data)
-
-
-class ProductDecrementStockAPIView(APIView):
-    serializer_class = ProductSerializer
-
-    def put(self, request, id, *args, **kwargs):
-        try:
-            if id != None and request.method == "PUT":
-                product = Product.objects.get(id=id)
-                number = request.data["number"]
-                if product.quantityInStock > number:
-                    product.quantityInStock = product.quantityInStock - number
-                    product.save()
-                serializer = ProductSerializer(product)
-        except:
-            print(f"Can't find any product")
-
-        return Response(serializer.data)
+    def get(self):
+        transaction = self.get_queryset()
+        print(transaction)
 
 
 
