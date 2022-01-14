@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +23,7 @@ import { ProductService } from './core/product.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from './features/footer/footer.component';
 import { HistoricalDataComponent } from './pages/historical-data/historical-data.component';
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { HistoricalDataComponent } from './pages/historical-data/historical-data
     ManageStockComponent,
     CardComponent,
     FooterComponent,
-    HistoricalDataComponent
+    HistoricalDataComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
