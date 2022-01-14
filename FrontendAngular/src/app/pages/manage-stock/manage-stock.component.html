@@ -8,6 +8,7 @@
     padding: 2rem 3rem;
     max-width: 100%;
     overflow-x: auto;
+    padding-bottom: 10%;
   "
 >
   <div
@@ -103,15 +104,14 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>
-</div>
-
-<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-  <button
-    mat-raised-button
-    style="margin-bottom: 40rem"
-    color="primary"
-    (click)="updateProducts()"
-  >
-    Modifier Stock
-  </button>
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <button
+      mat-raised-button
+      style="margin-bottom: 40rem"
+      color="primary"
+      (click)="updateProducts()"
+    >
+      Modifier Stock
+    </button>
+  </div>
 </div>
