@@ -1,7 +1,7 @@
-# Project name
+# Projet
 BateauThibault
 
-# Table of contents 
+# Table de matière
 * [Informations générales](#Informations-générales)
 * [Téchnology](#Téchnology)
 * [Installer](#Installer)
