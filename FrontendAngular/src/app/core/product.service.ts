@@ -10,12 +10,12 @@ export class ProductService {
 
   public API_URL: string = "http://localhost:8000/api/v1";
 
-  public currentMenuTab: any = [true, false, false];
+  public currentMenuTab: any = [true, false, false, false];
 
   constructor(private http: HttpClient) { }
 
   public resetMenuTabs(): void {
-    for(let i = 0;i < 3; i++) {
+    for(let i = 0;i < this.currentMenuTab.length; i++) {
       this.currentMenuTab[i] = false;
     }
   }
