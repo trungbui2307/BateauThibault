@@ -36,14 +36,18 @@ class ProductUpdateAPIView(APIView):
 
     def put(self, request, *args, **kwargs):
         try:
-            if request.method == "PUT" and request.data["id"]:
-                id = request.data["id"]
-                product = Product.objects.get(id=id)
-                for key, val in request.data.items():
-                    if key in product.__dict__:
-                        product.__dict__[key] = val
-                product.save()
-                serializer = ProductSerializer(product)
+            products = []
+            if request.method == "PUT" and request.data:
+                for prod in request.data:
+                    id = prod["id"]
+                    product = Product.objects.get(id=id)
+                    for key, val in prod.items():
+                        if key in product.__dict__:
+                            product.__dict__[key] = val
+                    product.save()
+                    products.append(product)
+
+            serializer = ProductSerializer(products, many=True)
         except:
             print("Can't find any product")
 
