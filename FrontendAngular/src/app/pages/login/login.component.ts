@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/core/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +15,15 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private _snackBar: MatSnackBar,
-    private authService: AuthService
+    private authService: AuthService,
+    public router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if(this.authService.isAuthenticated()){
+      this.router.navigate(['']);
+    }
+  }
 
   onUsernameChange(event: any) {
     this.username = event.target.value;
@@ -48,6 +54,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.username, this.password).subscribe(
       (res) => {
         this.authService.storeToken(res);
+        this.router.navigate(['']);
       },
       (err) => {
         this.openSnackBar("Username or password wrong! Please try again!", 'ERROR!');

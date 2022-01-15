@@ -25,6 +25,7 @@ const routes: Routes = [
     component: HistoricalDataComponent,
     canActivate: [AuthGuardService],
   },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
