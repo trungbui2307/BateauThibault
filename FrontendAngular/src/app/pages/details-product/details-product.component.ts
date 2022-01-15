@@ -101,7 +101,10 @@ export class DetailsProductComponent implements OnInit {
         if (this.selectedProduct) {          
           this.selectedProduct = {
             ...this.selectedProduct!,
-            quantity_in_stock: currentQuantityStock
+            price_on_sale: res[0].price_on_sale,
+            price_selling: res[0].price_selling,
+            discount: res[0].discount,
+            quantity_in_stock: res[0].quantity_in_stock
           };
           const index = this.products.findIndex(p => p.id === this.selectedProduct!.id);
           this.products.splice(index, 1, this.selectedProduct)

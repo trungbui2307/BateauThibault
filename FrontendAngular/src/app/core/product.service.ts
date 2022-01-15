@@ -40,6 +40,7 @@ export class ProductService {
   }
 
   public updateProducts(products: UpdatedProduct[]): Observable<Product[]> {
+    console.log(products)
     return this.http.put<Product[]>(this.API_URL + "/products/", products,
       {
         headers: new HttpHeaders({
