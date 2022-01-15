@@ -7,9 +7,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgChartsModule } from 'ng2-charts';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from './features/footer/footer.component';
 import { HistoricalDataComponent } from './pages/historical-data/historical-data.component';
 import { LoginComponent } from './pages/login/login.component';
+import { ChartsComponent } from './features/charts/charts.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { LoginComponent } from './pages/login/login.component';
     CardComponent,
     FooterComponent,
     HistoricalDataComponent,
-    LoginComponent
+    LoginComponent,
+    ChartsComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +53,7 @@ import { LoginComponent } from './pages/login/login.component';
     MatFormFieldModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatTabsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     NgChartsModule

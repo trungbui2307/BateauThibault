@@ -29,16 +29,6 @@ export class ProductService {
     return this.http.get<Product[]>(this.API_URL + "/infoproducts"); // Get /inforproducts "../assets/data/products.json"
   }
 
-  public putProduct(id: number, product: PutProductOnSale): Observable<PutProductOnSale> {
-    return this.http.put<PutProductOnSale>(this.API_URL + "/putonsale/" + id + "/", product,
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      }
-    );
-  }
-
   public updateProducts(products: UpdatedProduct[]): Observable<Product[]> {
     console.log(products)
     return this.http.put<Product[]>(this.API_URL + "/products/", products,
@@ -50,27 +40,14 @@ export class ProductService {
     );
   }
 
-  public putIncrementQuantityStockProduct(id: number, nbProduct: StockProduct): Observable<StockProduct> {
-    nbProduct.number = Number(nbProduct.number)
-    return this.http.put<StockProduct>(this.API_URL + "/incrementStock/" + id + "/", nbProduct,
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      }
-    );
+  public getTransactions(paramRequest: ParamRequest): Observable<ApiResponse[]> {
+    let urlWithoutYear = this.API_URL+"/transactions/"+"?start_date="+paramRequest.start_date+"&end_date="+paramRequest.end_date+"&type="+paramRequest.type;
+    let urlWithYear = urlWithoutYear + "&year="+paramRequest.year;
+    return (paramRequest.year === '') 
+      ? this.http.get<ApiResponse[]>(urlWithoutYear) 
+      : this.http.get<ApiResponse[]>(urlWithYear);
   }
 
-  public putDecrementQuantityStockProduct(id: number, nbProduct: StockProduct): Observable<StockProduct> {
-    nbProduct.number = Number(nbProduct.number)
-    return this.http.put<StockProduct>(this.API_URL + "/decrementStock/" + id + "/", nbProduct,
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      }
-    );
-  }
 }
 
 export interface Product {
@@ -93,14 +70,30 @@ export interface Product {
 export interface UpdatedProduct {
   id: number,
   price_selling?: number,
+  price_on_sale?: number,
   discount?: number,
   quantity_in_stock?: number,
 }
 
-export interface PutProductOnSale {
-  discount: number,
+export interface ParamRequest {
+  start_date: string,
+  end_date: string,
+  type: string,
+  year: string,  
 }
 
-export interface StockProduct {
-  number: number,
+export interface ApiResponse {
+  date?: string,  
+  week?: number,
+  month?: number,
+  year?: number,
+  trimestre?: number,
+  selling_quantity: number,
+  income: number,
+}
+
+export interface ParamChart {
+  barChartOptions: any,
+  barChartType: any,
+  barChartData: any
 }
