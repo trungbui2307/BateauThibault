@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Product(models.Model):
     name = models.CharField(max_length=20, verbose_name="Name of product", unique=True)
     category = models.IntegerField(default=5, verbose_name="Category", blank=False, null=False)
