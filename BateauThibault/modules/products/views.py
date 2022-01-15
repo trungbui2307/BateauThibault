@@ -115,6 +115,23 @@ class TransactionRetrieveAPIView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = TransactionSerializer
 
+    def parse_queryset(self, queryset, dataList, typeData, start):
+        sum = 0
+        quantity = 0
+        dataDict = {}
+        if queryset:
+            if typeData == "day":
+                dataDict[typeData] = start.date()
+            else:
+                dataDict[typeData] = start
+            for query in queryset:
+                sum += query.amount_total
+                quantity += query.selling_quantity
+            dataDict["income"] = sum
+            dataDict["selling_quantity"] = quantity
+            dataList.append(dataDict)
+        return dataList
+
     def get_data_by_days(self):
         dataList = []
 
@@ -127,19 +144,9 @@ class TransactionRetrieveAPIView(APIView):
         delta = timedelta(days=1)
 
         while start <= end:
-            sum = 0
-            quantity = 0
-            dataDict = {}
             endOfDay = start.replace(hour=23, minute=59, second=59)
             queryset = Transaction.objects.filter(selling_date__range=[start, endOfDay])
-            if queryset:
-                dataDict["date"] = start.date()
-                for query in queryset:
-                    sum += query.amount_total
-                    quantity += query.selling_quantity
-                dataDict["income"] = sum
-                dataDict["selling_quantity"] = quantity
-                dataList.append(dataDict)
+            dataList = self.parse_queryset(queryset, dataList, "day", start)
             start += delta
         return dataList
 
@@ -149,18 +156,8 @@ class TransactionRetrieveAPIView(APIView):
         end = int(self.request.query_params.get('end_date'))
         year = int(self.request.query_params.get('year'))
         while start <= end:
-            sum = 0
-            quantity = 0
-            dataDict = {}
             queryset = Transaction.objects.filter(selling_date__week=start, selling_date__year=year)
-            if queryset:
-                dataDict["week"] = start
-                for query in queryset:
-                    sum += query.amount_total
-                    quantity += query.selling_quantity
-                dataDict["income"] = sum
-                dataDict["selling_quantity"] = quantity
-                dataList.append(dataDict)
+            dataList = self.parse_queryset(queryset, dataList, "week", start)
             start += 1
         return dataList
 
@@ -170,18 +167,8 @@ class TransactionRetrieveAPIView(APIView):
         end = int(self.request.query_params.get('end_date'))
         year = int(self.request.query_params.get('year'))
         while start <= end:
-            sum = 0
-            quantity = 0
-            dataDict = {}
             queryset = Transaction.objects.filter(selling_date__month=start, selling_date__year=year)
-            if queryset:
-                dataDict["month"] = start
-                for query in queryset:
-                    sum += query.amount_total
-                    quantity += query.selling_quantity
-                dataDict["income"] = sum
-                dataDict["selling_quantity"] = quantity
-                dataList.append(dataDict)
+            dataList = self.parse_queryset(queryset, dataList, "month", start)
             start += 1
         return dataList
 
@@ -191,18 +178,8 @@ class TransactionRetrieveAPIView(APIView):
         end = int(self.request.query_params.get('end_date'))
         year = int(self.request.query_params.get('year'))
         while start <= end:
-            sum = 0
-            quantity = 0
-            dataDict = {}
             queryset = Transaction.objects.filter(selling_date__quarter=start, selling_date__year=year)
-            if queryset:
-                dataDict["trimestre"] = start
-                for query in queryset:
-                    sum += query.amount_total
-                    quantity += query.selling_quantity
-                dataDict["income"] = sum
-                dataDict["selling_quantity"] = quantity
-                dataList.append(dataDict)
+            dataList = self.parse_queryset(queryset, dataList, "trimestre", start)
             start += 1
         return dataList
 
@@ -211,18 +188,8 @@ class TransactionRetrieveAPIView(APIView):
         start = int(self.request.query_params.get('start_date'))
         end = int(self.request.query_params.get('end_date'))
         while start <= end:
-            sum = 0
-            quantity = 0
-            dataDict = {}
             queryset = Transaction.objects.filter(selling_date__year=start)
-            if queryset:
-                dataDict["year"] = start
-                for query in queryset:
-                    sum += query.amount_total
-                    quantity += query.selling_quantity
-                dataDict["income"] = sum
-                dataDict["selling_quantity"] = quantity
-                dataList.append(dataDict)
+            dataList = self.parse_queryset(queryset, dataList, "year", start)
             start += 1
         return dataList
 
