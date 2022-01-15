@@ -145,8 +145,8 @@ class TransactionRetrieveAPIView(APIView):
 
     def get_data_by_week(self):
         dataList = []
-        start = int(self.request.query_params.get('week_start'))
-        end = int(self.request.query_params.get('week_end'))
+        start = int(self.request.query_params.get('start_date'))
+        end = int(self.request.query_params.get('end_date'))
         year = int(self.request.query_params.get('year'))
         while start <= end:
             sum = 0
@@ -166,8 +166,8 @@ class TransactionRetrieveAPIView(APIView):
 
     def get_data_by_month(self):
         dataList = []
-        start = int(self.request.query_params.get('month_start'))
-        end = int(self.request.query_params.get('month_end'))
+        start = int(self.request.query_params.get('start_date'))
+        end = int(self.request.query_params.get('end_date'))
         year = int(self.request.query_params.get('year'))
         while start <= end:
             sum = 0
@@ -187,8 +187,8 @@ class TransactionRetrieveAPIView(APIView):
 
     def get_data_by_trimestre(self):
         dataList = []
-        start = int(self.request.query_params.get('trimestre_start'))
-        end = int(self.request.query_params.get('trimestre_end'))
+        start = int(self.request.query_params.get('start_date'))
+        end = int(self.request.query_params.get('end_date'))
         year = int(self.request.query_params.get('year'))
         while start <= end:
             sum = 0
@@ -208,8 +208,8 @@ class TransactionRetrieveAPIView(APIView):
 
     def get_data_by_year(self):
         dataList = []
-        start = int(self.request.query_params.get('year_start'))
-        end = int(self.request.query_params.get('year_end'))
+        start = int(self.request.query_params.get('start_date'))
+        end = int(self.request.query_params.get('end_date'))
         while start <= end:
             sum = 0
             quantity = 0
