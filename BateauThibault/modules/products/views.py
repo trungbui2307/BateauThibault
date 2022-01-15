@@ -5,10 +5,14 @@ from rest_framework.response import Response
 from .serializers import ProductSerializer, ProductDetailSerializer, TransactionSerializer
 from .models import Product, Transaction
 from datetime import datetime, date, timedelta
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 import pytz
 from django.utils import timezone
 
 class ProductListAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -22,6 +26,8 @@ class ProductListAPIView(APIView):
         return Response(serializer.data)
 
 class ProductRetrieveAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = ProductDetailSerializer
 
     def get(self, request, id, *args, **kwargs):
@@ -35,6 +41,8 @@ class ProductRetrieveAPIView(APIView):
             return Response(serializer.data)
 
 class ProductUpdateAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = ProductSerializer
 
     def get_object(self, id):
@@ -86,6 +94,8 @@ class ProductUpdateAPIView(APIView):
 
 
 class ProductRemoveAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = ProductSerializer
 
     def put(self, request, id, *args, **kwargs):
@@ -101,6 +111,8 @@ class ProductRemoveAPIView(APIView):
         return Response(serializer.data)
 
 class TransactionRetrieveAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = TransactionSerializer
 
     def get_data_by_days(self):
