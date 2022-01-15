@@ -26,6 +26,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from './features/footer/footer.component';
 import { HistoricalDataComponent } from './pages/historical-data/historical-data.component';
 import { LoginComponent } from './pages/login/login.component';
+import { AuthService } from './core/auth.service';
+import { AuthGuardService } from './auth/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -53,9 +55,9 @@ import { LoginComponent } from './pages/login/login.component';
     MatSnackBarModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgChartsModule
+    NgChartsModule,
   ],
-  providers: [ProductService],
+  providers: [ProductService, AuthService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
