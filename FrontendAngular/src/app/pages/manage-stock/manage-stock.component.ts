@@ -4,7 +4,7 @@ import {
   ProductService,
   UpdatedProduct,
 } from 'src/app/core/product.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface PeriodicElement {
   name: string;
@@ -25,16 +25,20 @@ export class ManageStockComponent implements OnInit {
     'discount',
     'quantity',
     'quantity_sold',
-    'quantityInStock',
+    'quantity_in_stock',
     'comments',
     'addStock',
     'addPromo',
+    'price_selling',
   ];
   dataSource: Product[] = [];
 
   updateData: UpdatedProduct[] = [];
 
-  constructor(private productService: ProductService, private _snackBar: MatSnackBar) {}
+  constructor(
+    private productService: ProductService,
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.getProducts();
@@ -74,13 +78,21 @@ export class ManageStockComponent implements OnInit {
       this.updateData.splice(index, 1, {
         ...this.updateData[index],
         id: elementId,
-        quantity_in_stock: Math.max(this.dataSource.find((d) => d.id === elementId)!.quantity_in_stock! + (+addStockInput), 0),
+        quantity_in_stock: Math.max(
+          this.dataSource.find((d) => d.id === elementId)!.quantity_in_stock! +
+            +addStockInput,
+          0
+        ),
       });
       return;
     }
     this.updateData.push({
       id: elementId,
-      quantity_in_stock: Math.max(this.dataSource.find((d) => d.id === elementId)!.quantity_in_stock! + (+addStockInput), 0),
+      quantity_in_stock: Math.max(
+        this.dataSource.find((d) => d.id === elementId)!.quantity_in_stock! +
+          +addStockInput,
+        0
+      ),
     });
   }
 
@@ -90,32 +102,67 @@ export class ManageStockComponent implements OnInit {
       this.updateData.splice(index, 1, {
         ...this.updateData[index],
         id: elementId,
-        discount: Math.min(this.dataSource.find((d) => d.id === elementId)!.discount! + (+addPromoInput), 100),
+        discount: Math.min(
+          this.dataSource.find((d) => d.id === elementId)!.discount! +
+            +addPromoInput,
+          100
+        ),
       });
       return;
     }
     this.updateData.push({
       id: elementId,
-      discount: Math.min(this.dataSource.find((d) => d.id === elementId)!.discount! + (+addPromoInput), 100),
+      discount: Math.min(
+        this.dataSource.find((d) => d.id === elementId)!.discount! +
+          +addPromoInput,
+        100
+      ),
+    });
+  }
+
+  thrownProducts(elementId: number, jeterCheckbox: boolean) {
+    const index = this.updateData.findIndex((d) => d.id === elementId);
+    if (index !== -1) {
+      this.updateData.splice(index, 1, {
+        ...this.updateData[index],
+        id: elementId,
+        price_selling: jeterCheckbox
+          ? 0
+          : this.dataSource.find((d) => d.id === elementId)!.price,
+      });
+      return;
+    }
+    this.updateData.push({
+      id: elementId,
+      price_selling: jeterCheckbox
+        ? 0
+        : this.dataSource.find((d) => d.id === elementId)!.price,
     });
   }
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
-      duration: 2000
+      duration: 2000,
     });
   }
 
   updateProducts() {
-    this.productService.updateProducts(this.updateData).subscribe((res: Product[]) => {
-      this.openSnackBar("Products updated successfully", "UPDATED!")
-      res.forEach(product => {
-        this.dataSource.splice(this.dataSource.findIndex(d => d.id === product.id), 1, {
-          ...product
-        })
-      });
-    }, (err) => {
-      this.openSnackBar(err, "ERROR!")
-    });
+    this.productService.updateProducts(this.updateData).subscribe(
+      (res: Product[]) => {
+        this.openSnackBar('Products updated successfully', 'UPDATED!');
+        res.forEach((product) => {
+          this.dataSource.splice(
+            this.dataSource.findIndex((d) => d.id === product.id),
+            1,
+            {
+              ...product,
+            }
+          );
+        });
+      },
+      (err) => {
+        this.openSnackBar(err, 'ERROR!');
+      }
+    );
   }
 }
