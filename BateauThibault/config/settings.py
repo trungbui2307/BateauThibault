@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'modules.products',
     'corsheaders',
+    'django_crontab',
     'rest_framework_simplejwt',
     'rest_framework',
 ]
@@ -176,3 +177,7 @@ SIMPLE_JWT = {
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRONJOBS =[
+    ('* * * * *', 'modules.products.cron.test_cron', '>> logs/cron_job.log')
+]

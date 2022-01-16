@@ -13,7 +13,7 @@ class Product(models.Model):
     discount = models.FloatField(default=0, verbose_name="Discount")
     comments = models.TextField(verbose_name="Comment", blank=True, null=True)
     owner = models.CharField(max_length=20, verbose_name="Name of owner", blank=False, null=False)
-    quantity_in_stock = models.IntegerField(default=0, verbose_name="Stock quantity", blank=False, null=False)
+    quantity_in_stock = models.IntegerField(default=50, verbose_name="Stock quantity", blank=False, null=False)
 
     class Meta:
         ordering = ('name',)
