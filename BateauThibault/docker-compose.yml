@@ -1,14 +1,21 @@
-web:
-  build: .
-  volumes:
-    - .:/code
-web_migrate:
-  extends:
-    service: web
-  command: bash -c "python run/manage.py migrate && python run/manage.py load_products && python run/manage.py setup_fake_data"
-web_run:
-  extends:
-    service: web
-  ports:
-    - "8000:8000"
-  command: bash -c "python run/manage.py runserver 0.0.0.0:8000"
+version: "3.9"
+
+services:
+  db:
+    image: nouchka/sqlite3:latest
+    volumes:
+      - ./data/db:/root/db
+    environment:
+      - SQLITE3_DB=db.sqlite3
+  web_run:
+    build: .
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: bash -c "python run/manage.py migrate && python run/manage.py load_products && 
+              python run/manage.py setup_fake_data && 
+              python run/manage.py runserver 0.0.0.0:8000"
+
