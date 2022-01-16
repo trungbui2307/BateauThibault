@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
+import { Subject } from 'rxjs';
+import { ApiResponse, ParamChart, ParamRequest, ProductService } from 'src/app/core/product.service';
 
 //import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 
@@ -9,60 +10,150 @@ import { BaseChartDirective } from 'ng2-charts';
   templateUrl: './historical-data.component.html',
   styleUrls: ['./historical-data.component.scss']
 })
-export class HistoricalDataComponent {
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+export class HistoricalDataComponent implements OnInit {
+
+  public eventSubject: Subject<ParamChart> = new Subject<ParamChart>();
+
+  public selectedTypes: any = [
+    { 
+      start_date: '',
+      end_date: '',
+      year: '',
+      isYearHidden: true,
+      start_date_label: 'Start Day:',            
+      end_date_label: 'End Day:',  
+      type: "day"
+    },
+    {
+      start_date: '', 
+      end_date: '',
+      year: '',
+      isYearHidden: false,
+      start_date_label: 'Start Week:',
+      end_date_label: 'End Week',
+      type: "week"
+    },
+    {
+      start_date: '',
+      end_date: '',   
+      year: '',        
+      isYearHidden: false,
+      start_date_label: 'Start Month',
+      end_date_label: 'End Month',
+      type: "month"  
+    },
+    {
+      start_date: '',
+      end_date: '',
+      year: '',
+      isYearHidden: true,
+      start_date_label: 'Start Year:',
+      end_date_label: 'End Year:',
+      type: "year" 
+    },
+    {
+      start_date: '',
+      end_date: '',
+      year: '',
+      isYearHidden: false,
+      start_date_label: 'Start Trimestre',
+      end_date_label: 'End Trimestre',
+      type: "trimestre"
+    }
+  ];  
 
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
-    // We use these empty structures as placeholders for dynamic theming.
     scales: {
       x: {},
-      y: {
-        min: -10
-      }
-    }/*,
+      y: {}
+    },
     plugins: {
       legend: {
         display: true,
-      },
-      datalabels: {
-        anchor: 'end',
-        align: 'end'
       }
-    }*/
+    }
   };
   public barChartType: ChartType = 'bar';
   
 
   public barChartData: ChartData<'bar'> = {
-    labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
+    labels: [],
     datasets: [
-      { data: [ -10, 59, 80, 81, 56, 55, 40 ], label: 'Chiffre d\'affaire' },
-      { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Quantite vendu' }
+      { data: [], label: 'Chiffre d\'affaire' },
+      { data: [], label: 'Quantite vendu' }
     ]
   };
-
-  // events
-  public chartClicked({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
-    //console.log(event, active);
+  
+  public paramRequest: ParamRequest = {
+    start_date: '2022-01-12',
+    end_date: '2022-01-20',
+    type: 'day',
+    year: '',
   }
 
-  public chartHovered({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
-    //console.log(event, active);
+  public constructor(private productService: ProductService) {}
+
+  public ngOnInit(): void {
+    //this.getTransactions();    
   }
 
-  public randomize(): void {
-    // Only Change 3 values
-    this.barChartData.datasets[0].data = [
-      Math.round(Math.random() * 100),
-      59,
-      80,
-      Math.round(Math.random() * 100),
-      56,
-      Math.round(Math.random() * 100),
-      40 ];
+  public getTransactions() { 
+    
+    console.log(this.paramRequest);
 
-    this.chart?.update();
+    this.productService
+      .getTransactions(this.paramRequest)
+      .subscribe((res: ApiResponse[]) => {
+        this.resetDatasets();
+        res.forEach((e) => {
+          if (e.day) this.barChartData.labels?.push(e.day);
+          if (e.week) this.barChartData.labels?.push(e.week.toString());
+          if (e.month) this.barChartData.labels?.push(e.month.toString());
+          if (e.year) this.barChartData.labels?.push(e.year.toString());
+          if (e.trimestre) this.barChartData.labels?.push(e.trimestre.toString());
+          this.barChartData.datasets[0].data.push(e.income);
+          this.barChartData.datasets[1].data.push(e.selling_quantity);
+          
+          let paramChart: ParamChart = {
+            barChartOptions: this.barChartOptions,
+            barChartType: this.barChartType,
+            barChartData: this.barChartData
+          }
+
+          console.log(this.barChartData);
+
+          this.eventSubject.next(paramChart);
+        });        
+      });
   }
+
+  public onChangeDay(event: any, id:number, isStartDate: number): void {    
+    if (isStartDate == 0) {
+      this.paramRequest.start_date = event.target.value;
+    } else {
+      this.paramRequest.end_date = event.target.value;
+    }
+    this.paramRequest.type = this.selectedTypes[id].type;
+    if (this.paramRequest.type == this.selectedTypes[0].type) {
+      this.paramRequest.year = '';
+    }
+  }
+
+  public onChangeYear(event: any, id:number): void {
+    this.paramRequest.year = event.target.value;
+    this.paramRequest.type = this.selectedTypes[id].type;
+  }
+
+  private resetDatasets() {
+    this.barChartData = {
+      labels: [],
+      datasets: [
+        { data: [], label:  'Chiffre d\'affaire'},
+        { data: [], label: 'Quantite vendu' }
+      ]
+    }
+  }
+
 }
 
