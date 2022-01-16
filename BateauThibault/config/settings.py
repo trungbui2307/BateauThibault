@@ -26,8 +26,14 @@ SECRET_KEY = 'django-insecure-o^zs#xw6v!h25(%*#+q4i$2zdvownc4!fi&r-f6fwq-7bt@$(s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 
+# ONLY FOR DEV LOCAL
+ADMINS = (
+    ('admin', 'admin@mysite.com'),
+)
+ADMIN_EMAIL = 'admin@mysite.com'
+ADMIN_INITIAL_PASSWORD = 'admin'
 
 # products definition
 

@@ -24,7 +24,8 @@ class Command(BaseCommand):
         end_date = datetime.strptime('2023-1-1 00:00:00', '%Y-%m-%d %H:%M:%S')
 
         for _ in range(NUM_TRANSACTION):
-            id = randint(1,4)
+            id = randint(1, 7)
+            random_days = str(self.random_date(start_date, end_date))
             transaction = Transaction()
             transaction.product = Product.objects.get(id=id)
             random_days = str(self.random_date(start_date, end_date))
