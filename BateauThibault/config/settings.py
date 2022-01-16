@@ -28,6 +28,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 
+# ONLY FOR DEV LOCAL
+ADMINS = (
+    ('admin', 'admin@mysite.com'),
+)
+ADMIN_EMAIL = 'admin@mysite.com'
+ADMIN_INITIAL_PASSWORD = 'admin'
 
 # products definition
 

@@ -22,10 +22,10 @@ class Command(BaseCommand):
         self.stdout.write("Creating new data...")
         start_date = datetime.strptime('2019-1-1 00:00:00', '%Y-%m-%d %H:%M:%S')
         end_date = datetime.strptime('2023-1-1 00:00:00', '%Y-%m-%d %H:%M:%S')
-        random_days = str(self.random_date(start_date, end_date))
 
         for _ in range(NUM_TRANSACTION):
             id = randint(1, 7)
+            random_days = str(self.random_date(start_date, end_date))
             transaction = Transaction()
             transaction.product = Product.objects.get(id=id)
             transaction.selling_date = random_days
