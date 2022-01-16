@@ -2,20 +2,26 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
+  public API_URL: string = 'http://localhost:8000/api/v1';
 
-  public API_URL: string = "http://localhost:8000/api/v1";
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization:
+        `Bearer ${localStorage.getItem('accessToken')}`,
+    }),
+  };
 
   public currentMenuTab: any = [true, false, false, false];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   public resetMenuTabs(): void {
-    for(let i = 0;i < this.currentMenuTab.length; i++) {
+    for (let i = 0; i < this.currentMenuTab.length; i++) {
       this.currentMenuTab[i] = false;
     }
   }
@@ -26,45 +32,39 @@ export class ProductService {
   }
 
   public getProductsFromJson(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.API_URL + "/infoproducts"); // Get /inforproducts "../assets/data/products.json"
+    return this.http.get<Product[]>(this.API_URL + '/infoproducts', this.httpOptions); // Get /inforproducts "../assets/data/products.json"
   }
 
   public updateProducts(products: UpdatedProduct[]): Observable<Product[]> {
-    console.log(products)
-    return this.http.put<Product[]>(this.API_URL + "/products/", products,
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      }
-    );
+    console.log(products);
+    return this.http.put<Product[]>(this.API_URL + '/products/', products, this.httpOptions);
   }
 
   public getTransactions(paramRequest: ParamRequest): Observable<ApiResponse[]> {
     let urlWithoutYear = this.API_URL+"/transactions/"+"?start_date="+paramRequest.start_date+"&end_date="+paramRequest.end_date+"&type="+paramRequest.type;
     let urlWithYear = urlWithoutYear + "&year="+paramRequest.year;
     return (paramRequest.year === '') 
-      ? this.http.get<ApiResponse[]>(urlWithoutYear) 
-      : this.http.get<ApiResponse[]>(urlWithYear);
+      ? this.http.get<ApiResponse[]>(urlWithoutYear, this.httpOptions) 
+      : this.http.get<ApiResponse[]>(urlWithYear, this.httpOptions);
   }
 
 }
 
 export interface Product {
-  id: number,
-  unit: string,
-  category: number,
-  name: string,
-  discount: number,
-  comments: string,
-  owner: string,
-  price: number,
-  price_selling: number,
-  price_on_sale: number,
-  sale: boolean,
-  availability: boolean,
-  quantity_in_stock: number,
-  quantity_sold: number,
+  id: number;
+  unit: string;
+  category: number;
+  name: string;
+  discount: number;
+  comments: string;
+  owner: string;
+  price: number;
+  price_selling: number;
+  price_on_sale: number;
+  sale: boolean;
+  availability: boolean;
+  quantity_in_stock: number;
+  quantity_sold: number;
 }
 
 export interface UpdatedProduct {
@@ -83,7 +83,7 @@ export interface ParamRequest {
 }
 
 export interface ApiResponse {
-  date?: string,  
+  day?: string,  
   week?: number,
   month?: number,
   year?: number,

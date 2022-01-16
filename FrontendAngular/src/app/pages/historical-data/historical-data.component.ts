@@ -100,14 +100,14 @@ export class HistoricalDataComponent implements OnInit {
 
   public getTransactions() { 
     
-    
+    console.log(this.paramRequest);
 
     this.productService
       .getTransactions(this.paramRequest)
       .subscribe((res: ApiResponse[]) => {
         this.resetDatasets();
         res.forEach((e) => {
-          if (e.date) this.barChartData.labels?.push(e.date);
+          if (e.day) this.barChartData.labels?.push(e.day);
           if (e.week) this.barChartData.labels?.push(e.week.toString());
           if (e.month) this.barChartData.labels?.push(e.month.toString());
           if (e.year) this.barChartData.labels?.push(e.year.toString());
@@ -121,18 +121,23 @@ export class HistoricalDataComponent implements OnInit {
             barChartData: this.barChartData
           }
 
+          console.log(this.barChartData);
+
           this.eventSubject.next(paramChart);
         });        
       });
   }
 
-  public onChangeDay(event: any, id:number, isStartDate: number): void {
+  public onChangeDay(event: any, id:number, isStartDate: number): void {    
     if (isStartDate == 0) {
       this.paramRequest.start_date = event.target.value;
     } else {
       this.paramRequest.end_date = event.target.value;
     }
     this.paramRequest.type = this.selectedTypes[id].type;
+    if (this.paramRequest.type == this.selectedTypes[0].type) {
+      this.paramRequest.year = '';
+    }
   }
 
   public onChangeYear(event: any, id:number): void {

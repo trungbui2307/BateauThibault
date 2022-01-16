@@ -27,6 +27,8 @@ import { FooterComponent } from './features/footer/footer.component';
 import { HistoricalDataComponent } from './pages/historical-data/historical-data.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ChartsComponent } from './features/charts/charts.component';
+import { AuthService } from './core/auth.service';
+import { AuthGuardService } from './auth/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -56,9 +58,9 @@ import { ChartsComponent } from './features/charts/charts.component';
     MatTabsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgChartsModule
+    NgChartsModule,
   ],
-  providers: [ProductService],
+  providers: [ProductService, AuthService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
