@@ -28,6 +28,7 @@ class Command(BaseCommand):
             random_days = str(self.random_date(start_date, end_date))
             transaction = Transaction()
             transaction.product = Product.objects.get(id=id)
+            random_days = str(self.random_date(start_date, end_date))
             transaction.selling_date = random_days
             transaction.selling_quantity = randint(1,100)
             transaction.amount_total = randint(80, 400)
