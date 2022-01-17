@@ -1,5 +1,4 @@
 
-
 web:
   build: .
   volumes:
@@ -7,15 +6,19 @@ web:
 web_migrate:
   extends:
     service: web
-  command: bash -c "
-            python run/manage.py makemigrations &&
-            python run/manage.py migrate && 
-            python run/manage.py load_products && 
-            python run/manage.py setup_fake_data"
+  command: bash -c "python run/manage.py makemigrations && python run/manage.py migrate"
 web_run:
   extends:
     service: web
   ports:
     - "8000:8000"
   command: bash -c "python run/manage.py runserver 0.0.0.0:8000"
-
+  labels:
+    ofelia.enabled: "true"
+    ofelia.job-exec.datecron.schedule: "@every 30s"
+    ofelia.job-exec.datecron.command: "python run/manage.py sale"
+ofelia:
+    image: mcuadros/ofelia:latest
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
