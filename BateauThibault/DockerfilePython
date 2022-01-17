@@ -1,5 +1,0 @@
-FROM python:3.9.0b4-alpine3.12
-COPY myEngineRefresh.sh /bin/cron_script.sh
-COPY crontabForMySearchEngine /var/spool/cron/crontabs/crontabForMySearchEngine
-RUN chmod +x /bin/cron_script.sh
-CMD crond -l 2 -f
