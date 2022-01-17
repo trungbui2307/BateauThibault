@@ -13,7 +13,7 @@ class Product(models.Model):
     discount = models.FloatField(default=0, verbose_name="Discount")
     comments = models.TextField(verbose_name="Comment", blank=True, null=True)
     owner = models.CharField(max_length=20, verbose_name="Name of owner", blank=False, null=False)
-    quantity_in_stock = models.IntegerField(default=0, verbose_name="Stock quantity", blank=False, null=False)
+    quantity_in_stock = models.IntegerField(default=50, verbose_name="Stock quantity", blank=False, null=False)
 
     class Meta:
         ordering = ('name',)
@@ -37,3 +37,17 @@ class Transaction(models.Model):
 
     def __str__(self):
         return self.product.name
+
+class ImportStock(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    import_date = models.DateTimeField(blank=False, null=False, verbose_name="Date import")
+    import_quantity = models.IntegerField(default=0, verbose_name="Quantite de Import")
+    amount_spending = models.FloatField(verbose_name="Sum of spending")
+
+    class Meta:
+        ordering = ('import_date',)
+
+    def __str__(self):
+        return self.product.name
+
+

@@ -15,9 +15,5 @@ COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . /code/
 
-RUN rm -f db.sqlite3
-RUN rm -f modules/products/migrations
-RUN ls
-
-CMD ["/code/runserver.sh"]
+CMD ["./init.sh"]
 
