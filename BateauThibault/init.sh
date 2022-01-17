@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd /code
 export PYTHONPATH=/code;$PYTHONPATH
 
 python run/manage.py makemigrations

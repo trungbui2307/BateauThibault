@@ -8,15 +8,28 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         with urllib.request.urlopen('http://51.255.166.155:1352/tig/products/?format=json') as url:
             data = json.loads(url.read().decode())
+            allProducts = Product.objects.all()
             product = Product()
 
         for prod in data:
-            print(f"{product} to Database")
-            for k, v in prod.items():
-                setattr(product, k, v)
-            try:
-                print("Saved with succes")
-                product.save()
-            except:
-                print("Already exist!")
+            priceImport = prod["price"]
+            idProduct = prod["id"]
+            # Get products from server
+            if not allProducts:
+                print(f"{product} to Database")
+                for k, v in prod.items():
+                    setattr(product, k, v)
+                try:
+                    product.save()
+                    print("Saved with succes...")
+                except:
+                    print("Errors")
+            else:
+                #Update price if change in server
+                for product in allProducts:
+                    if product.price != priceImport and product.id == idProduct:
+                        product.price = priceImport
+                        product.save()
+                        print("Price changed...")
 
+        self.stdout.write("Finished")

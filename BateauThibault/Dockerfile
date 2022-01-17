@@ -15,5 +15,5 @@ COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . /code/
 
-CMD ["/code/init.sh"]
+CMD ["./init.sh"]
 

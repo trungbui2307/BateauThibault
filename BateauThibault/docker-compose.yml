@@ -1,13 +1,16 @@
 
 web:
   build: .
+  container_name: django_environment
   volumes:
     - .:/code
 web_migrate:
   extends:
     service: web
+  container_name: django_migrate
   command: bash -c "python run/manage.py makemigrations && python run/manage.py migrate"
 web_run:
+  container_name: django_application
   extends:
     service: web
   ports:
@@ -20,6 +23,7 @@ web_run:
     ofelia.job-exec.productcron.schedule: "@every 60s"
     ofelia.job-exec.productcron.command: "python run/manage.py load_products"
 ofelia:
+    container_name: ofelia_crontab
     image: mcuadros/ofelia:latest
     command: daemon --docker
     volumes:
