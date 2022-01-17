@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { Subject } from 'rxjs';
-import { ApiResponse, ParamChart, ParamRequest, ProductService } from 'src/app/core/product.service';
+import { ApiResponse, ApiStatisticResponse, ParamChart, ParamRequest, ProductService } from 'src/app/core/product.service';
 
 //import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 
@@ -16,12 +16,12 @@ export class HistoricalDataComponent implements OnInit {
 
   public selectedTypes: any = [
     { 
-      start_date: '',
-      end_date: '',
+      start_date: '2022-01-01',
+      end_date: '2022-01-20',
       year: '',
       isYearHidden: true,
-      start_date_label: 'Start Day:',            
-      end_date_label: 'End Day:',  
+      start_date_label: 'Start Day: ',            
+      end_date_label: 'End Day: ',  
       type: "day"
     },
     {
@@ -29,8 +29,8 @@ export class HistoricalDataComponent implements OnInit {
       end_date: '',
       year: '',
       isYearHidden: false,
-      start_date_label: 'Start Week:',
-      end_date_label: 'End Week',
+      start_date_label: 'Start Week: ',
+      end_date_label: 'End Week: ',
       type: "week"
     },
     {
@@ -38,8 +38,8 @@ export class HistoricalDataComponent implements OnInit {
       end_date: '',   
       year: '',        
       isYearHidden: false,
-      start_date_label: 'Start Month',
-      end_date_label: 'End Month',
+      start_date_label: 'Start Month: ',
+      end_date_label: 'End Month: ',
       type: "month"  
     },
     {
@@ -47,8 +47,8 @@ export class HistoricalDataComponent implements OnInit {
       end_date: '',
       year: '',
       isYearHidden: true,
-      start_date_label: 'Start Year:',
-      end_date_label: 'End Year:',
+      start_date_label: 'Start Year: ',
+      end_date_label: 'End Year: ',
       type: "year" 
     },
     {
@@ -56,9 +56,18 @@ export class HistoricalDataComponent implements OnInit {
       end_date: '',
       year: '',
       isYearHidden: false,
-      start_date_label: 'Start Trimestre',
-      end_date_label: 'End Trimestre',
+      start_date_label: 'Start Trimestre: ',
+      end_date_label: 'End Trimestre: ',
       type: "trimestre"
+    },
+    {
+      start_date: '',
+      end_date: '',
+      year: '',
+      isYearHidden: true,
+      start_date_label: 'Start Year: ',
+      end_date_label: 'End Year: ',
+      type: "statistic"
     }
   ];  
 
@@ -86,7 +95,7 @@ export class HistoricalDataComponent implements OnInit {
   };
   
   public paramRequest: ParamRequest = {
-    start_date: '2022-01-12',
+    start_date: '2022-01-01',
     end_date: '2022-01-20',
     type: 'day',
     year: '',
@@ -95,14 +104,34 @@ export class HistoricalDataComponent implements OnInit {
   public constructor(private productService: ProductService) {}
 
   public ngOnInit(): void {
-    //this.getTransactions();    
+    this.getTransactions();  
   }
 
-  public getTransactions() { 
-    
-    console.log(this.paramRequest);
-
-    this.productService
+  public getTransactions() {     
+    //console.log(this.paramRequest);
+    if (this.paramRequest.type === 'statistic') {
+      this.productService
+      .getStatistics(this.paramRequest)
+      .subscribe((res: ApiStatisticResponse[]) => {
+        this.resetDatasets();
+        res.forEach((e) => {          
+          this.barChartData.labels?.push(e.year.toString());
+          this.barChartData.datasets[0].data.push(e.benefice);
+          this.barChartData.datasets[0].label = "Benefice";
+          this.barChartData.datasets[1].data.push(e.tax);
+          this.barChartData.datasets[1].label = "Impot";
+          
+          let paramChart: ParamChart = {
+            barChartOptions: this.barChartOptions,
+            barChartType: this.barChartType,
+            barChartData: this.barChartData
+          }
+          //console.log(this.barChartData);
+          this.eventSubject.next(paramChart);
+        });        
+      });
+    } else {
+      this.productService
       .getTransactions(this.paramRequest)
       .subscribe((res: ApiResponse[]) => {
         this.resetDatasets();
@@ -120,12 +149,12 @@ export class HistoricalDataComponent implements OnInit {
             barChartType: this.barChartType,
             barChartData: this.barChartData
           }
-
-          console.log(this.barChartData);
-
+          //console.log(this.barChartData);
           this.eventSubject.next(paramChart);
         });        
       });
+    }
+    
   }
 
   public onChangeDay(event: any, id:number, isStartDate: number): void {    
@@ -153,6 +182,15 @@ export class HistoricalDataComponent implements OnInit {
         { data: [], label: 'Quantite vendu' }
       ]
     }
+  }
+
+  public onTabChange($event: any): void {
+    this.paramRequest.type = this.selectedTypes[$event.index].type;
+    this.paramRequest.start_date = this.selectedTypes[$event.index].start_date;
+    this.paramRequest.end_date = this.selectedTypes[$event.index].end_date;
+    this.paramRequest.year = (!this.selectedTypes[$event.index].isYearHidden) ?
+                                this.selectedTypes[$event.index].year : '';
+    //console.log(this.paramRequest);
   }
 
 }

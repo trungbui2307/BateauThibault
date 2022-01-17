@@ -5,26 +5,26 @@
 <div class="historical-data-wrapper" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
   <div fxLayout="row">
     <div fxLayout="row">
-      <mat-tab-group>
+      <mat-tab-group (selectedTabChange)="onTabChange($event)">
         <div *ngFor="let selectedType of this.selectedTypes;let i = index">
           <mat-tab [label]="selectedType.type | titlecase">
             <mat-card>
               <mat-card-content fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="20px">
                 <div fxFlex="25%">
                   <span>{{ selectedType.start_date_label }}</span>
-                  <input class="hd-input" (change)="onChangeDay($event, i, 0)" type="string" step="1"
+                  <input class="hd-input" (change)="onChangeDay($event, i, 0)" [value]="selectedType.start_date" type="string" step="1"
                     />
                 </div>
                 <div fxFlex="25%">
                   <span>{{ selectedType.end_date_label }}</span>
-                  <input class="hd-input" (change)="onChangeDay($event, i, 1)" type="string" step="1"
+                  <input class="hd-input" (change)="onChangeDay($event, i, 1)" [value]="selectedType.end_date" type="string" step="1"
                     placeholder="" />
                 </div>
                 <div fxFlex="25%" *ngIf="!selectedType.isYearHidden">
                   <span>
                     Year:
                   </span>
-                  <input class="hd-input" (change)="onChangeYear($event, i)" type="string" step="1"
+                  <input class="hd-input" (change)="onChangeYear($event, i)" [value]="selectedType.year" type="string" step="1"
                     placeholder="" />
                 </div>
                 <div fxFlex="15%">
