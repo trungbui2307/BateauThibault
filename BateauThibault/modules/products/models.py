@@ -37,3 +37,17 @@ class Transaction(models.Model):
 
     def __str__(self):
         return self.product.name
+
+class ImportStock(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    import_date = models.DateTimeField(blank=False, null=False, verbose_name="Date import")
+    import_quantity = models.IntegerField(default=0, verbose_name="Quantite de Import")
+    amount_spending = models.FloatField(verbose_name="Sum of spending")
+
+    class Meta:
+        ordering = ('import_date',)
+
+    def __str__(self):
+        return self.product.name
+
+
