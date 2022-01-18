@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { Subject } from 'rxjs';
-import { ApiResponse, ParamChart, ParamRequest, ProductService } from 'src/app/core/product.service';
+import { ApiResponse, ApiStatisticResponse, ParamChart, ParamRequest, ProductService } from 'src/app/core/product.service';
 
 //import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 
@@ -16,12 +16,12 @@ export class HistoricalDataComponent implements OnInit {
 
   public selectedTypes: any = [
     { 
-      start_date: '',
-      end_date: '',
+      start_date: '2022-01-01',
+      end_date: '2022-01-20',
       year: '',
       isYearHidden: true,
-      start_date_label: 'Start Day:',            
-      end_date_label: 'End Day:',  
+      start_date_label: 'Start Day: ',            
+      end_date_label: 'End Day: ',  
       type: "day"
     },
     {
@@ -29,8 +29,8 @@ export class HistoricalDataComponent implements OnInit {
       end_date: '',
       year: '',
       isYearHidden: false,
-      start_date_label: 'Start Week:',
-      end_date_label: 'End Week',
+      start_date_label: 'Start Week: ',
+      end_date_label: 'End Week: ',
       type: "week"
     },
     {
@@ -38,8 +38,8 @@ export class HistoricalDataComponent implements OnInit {
       end_date: '',   
       year: '',        
       isYearHidden: false,
-      start_date_label: 'Start Month',
-      end_date_label: 'End Month',
+      start_date_label: 'Start Month: ',
+      end_date_label: 'End Month: ',
       type: "month"  
     },
     {
@@ -47,8 +47,8 @@ export class HistoricalDataComponent implements OnInit {
       end_date: '',
       year: '',
       isYearHidden: true,
-      start_date_label: 'Start Year:',
-      end_date_label: 'End Year:',
+      start_date_label: 'Start Year: ',
+      end_date_label: 'End Year: ',
       type: "year" 
     },
     {
@@ -56,9 +56,18 @@ export class HistoricalDataComponent implements OnInit {
       end_date: '',
       year: '',
       isYearHidden: false,
-      start_date_label: 'Start Trimestre',
-      end_date_label: 'End Trimestre',
+      start_date_label: 'Start Trimestre: ',
+      end_date_label: 'End Trimestre: ',
       type: "trimestre"
+    },
+    {
+      start_date: '',
+      end_date: '',
+      year: '',
+      isYearHidden: true,
+      start_date_label: 'Start Year: ',
+      end_date_label: 'End Year: ',
+      type: "statistic"
     }
   ];  
 
@@ -83,29 +92,54 @@ export class HistoricalDataComponent implements OnInit {
       { data: [], label: 'Chiffre d\'affaire' },
       { data: [], label: 'Quantite vendu' }
     ]
-  };
+  };  
   
   public paramRequest: ParamRequest = {
-    start_date: '2022-01-12',
+    start_date: '2022-01-01',
     end_date: '2022-01-20',
     type: 'day',
     year: '',
   }
 
+  public timer: any;
+  public checkBox: boolean = false;
+
   public constructor(private productService: ProductService) {}
 
   public ngOnInit(): void {
-    //this.getTransactions();    
+    this.timer = setInterval(() => this.getTransactions(), 5000);
   }
 
-  public getTransactions() { 
-    
-    console.log(this.paramRequest);
-
-    this.productService
+  public getTransactions() {     
+    this.resetDatasets();
+    if (this.paramRequest.type == 'statistic') {      
+      this.barChartData.datasets.push({
+        label: "Impot",
+        data: [],            
+      });
+      this.barChartData.datasets[0].label = "Chiffre d\'affaire";
+      this.barChartData.datasets[1].label = "Benefice";
+      this.productService
+      .getStatistics(this.paramRequest)
+      .subscribe((res: ApiStatisticResponse[]) => {        
+        res.forEach((e) => {          
+          this.barChartData.labels?.push(e.year.toString());
+          this.barChartData.datasets[0].data.push(e.selling_sum);          
+          this.barChartData.datasets[1].data.push(e.benefice);          
+          this.barChartData.datasets[2].data.push(e.tax);          
+          
+          let paramChart: ParamChart = {
+            barChartOptions: this.barChartOptions,
+            barChartType: this.barChartType,
+            barChartData: this.barChartData
+          }
+          this.eventSubject.next(paramChart);
+        });        
+      });
+    } else {
+      this.productService
       .getTransactions(this.paramRequest)
-      .subscribe((res: ApiResponse[]) => {
-        this.resetDatasets();
+      .subscribe((res: ApiResponse[]) => {        
         res.forEach((e) => {
           if (e.day) this.barChartData.labels?.push(e.day);
           if (e.week) this.barChartData.labels?.push(e.week.toString());
@@ -120,12 +154,12 @@ export class HistoricalDataComponent implements OnInit {
             barChartType: this.barChartType,
             barChartData: this.barChartData
           }
-
-          console.log(this.barChartData);
-
+          //console.log(this.barChartData);
           this.eventSubject.next(paramChart);
         });        
       });
+    }
+    
   }
 
   public onChangeDay(event: any, id:number, isStartDate: number): void {    
@@ -152,6 +186,25 @@ export class HistoricalDataComponent implements OnInit {
         { data: [], label:  'Chiffre d\'affaire'},
         { data: [], label: 'Quantite vendu' }
       ]
+    };
+  }
+
+  public onTabChange($event: any): void {
+    this.paramRequest.type = this.selectedTypes[$event.index].type;
+    this.paramRequest.start_date = this.selectedTypes[$event.index].start_date;
+    this.paramRequest.end_date = this.selectedTypes[$event.index].end_date;
+    this.paramRequest.year = (!this.selectedTypes[$event.index].isYearHidden) ?
+                                this.selectedTypes[$event.index].year : '';
+    console.log(this.paramRequest);
+  }
+
+  public turnOffAutoRefresh($event: any): void {
+    this.checkBox = !this.checkBox;
+    
+    if (this.checkBox) {
+      clearInterval(this.timer);
+    } else {
+      this.timer = setInterval(() => this.getTransactions(), 5000);
     }
   }
 

@@ -1,49 +1,51 @@
 <app-header></app-header>
 <div id="hd-title" fxLayoutAlign="center center">
-  <h2>Graphe</h2>
+  <h2></h2>
 </div>
 <div class="historical-data-wrapper" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
-  <div class="hd-input" fxLayout="row">
+  <div fxLayout="row">
     <div fxLayout="row">
-      <mat-tab-group>
+      
+      <mat-tab-group (selectedTabChange)="onTabChange($event)">
         <div *ngFor="let selectedType of this.selectedTypes;let i = index">
           <mat-tab [label]="selectedType.type | titlecase">
             <mat-card>
               <mat-card-content fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="20px">
                 <div fxFlex="25%">
                   <span>{{ selectedType.start_date_label }}</span>
-                  <input (change)="onChangeDay($event, i, 0)" style="width: 55px; height: 30px" type="string" step="1"
-                    placeholder="" />
+                  <input class="hd-input" (change)="onChangeDay($event, i, 0)" ([value])="selectedType.start_date"
+                    type="string" step="1" />
                 </div>
                 <div fxFlex="25%">
                   <span>{{ selectedType.end_date_label }}</span>
-                  <input (change)="onChangeDay($event, i, 1)" style="width: 55px; height: 30px" type="string" step="1"
-                    placeholder="" />
+                  <input class="hd-input" (change)="onChangeDay($event, i, 1)" ([value])="selectedType.end_date"
+                    type="string" step="1" placeholder="" />
                 </div>
                 <div fxFlex="25%" *ngIf="!selectedType.isYearHidden">
                   <span>
                     Year:
                   </span>
-                  <input (change)="onChangeYear($event, i)" style="width: 55px; height: 30px" type="string" step="1"
-                    placeholder="" />
+                  <input class="hd-input" (change)="onChangeYear($event, i)" ([value])="selectedType.year" type="string"
+                    step="1" placeholder="" />
                 </div>
-                <div fxFlex="15%">
-                  <button mat-raised-button color="primary" (click)="getTransactions()">
+                <div fxFlex="25%">
+                  <button mat-raised-button color="primary"  (click)="getTransactions()">
                     Mettre a jour le graphe
                   </button>
-                </div>
+                  <div fxFlex="5%">
+                    <input [value]="checkBox" (change)="turnOffAutoRefresh($event)" style="width: 20px; height: 20px"
+                      type="checkbox" id="autoRefresh" step="1" />
+                  </div>
+                </div>                
               </mat-card-content>
             </mat-card>
-          </mat-tab>
-        </div>                
+          </mat-tab>          
+        </div>
       </mat-tab-group>
     </div>
   </div>
   <div fxLayout="row">
-    <app-charts 
-      [events]="eventSubject.asObservable()"
-      [barChartOptions]="barChartOptions" 
-      [barChartType]="barChartType" 
+    <app-charts [events]="eventSubject.asObservable()" [barChartOptions]="barChartOptions" [barChartType]="barChartType"
       [barChartData]="barChartData">
     </app-charts>
   </div>

@@ -32,7 +32,7 @@ export class ProductService {
   }
 
   public getProductsFromJson(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.API_URL + '/infoproducts', this.httpOptions); // Get /inforproducts "../assets/data/products.json"
+    return this.http.get<Product[]>(this.API_URL + '/infoproducts', this.httpOptions);
   }
 
   public updateProducts(products: UpdatedProduct[]): Observable<Product[]> {
@@ -46,6 +46,10 @@ export class ProductService {
     return (paramRequest.year === '') 
       ? this.http.get<ApiResponse[]>(urlWithoutYear, this.httpOptions) 
       : this.http.get<ApiResponse[]>(urlWithYear, this.httpOptions);
+  }
+
+  public getStatistics(paramRequest: ParamRequest): Observable<ApiStatisticResponse[]> {    
+    return this.http.get<ApiStatisticResponse[]>(this.API_URL+"/statistic/?year_start="+paramRequest.start_date+"&year_end="+paramRequest.end_date, this.httpOptions);
   }
 
 }
@@ -90,6 +94,14 @@ export interface ApiResponse {
   trimestre?: number,
   selling_quantity: number,
   income: number,
+}
+
+export interface ApiStatisticResponse {
+  year: number,
+  selling_sum: number,
+  depending_sum: number,
+  tax: number,
+  benefice: number
 }
 
 export interface ParamChart {

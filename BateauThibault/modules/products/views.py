@@ -3,12 +3,10 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import ProductSerializer, ProductDetailSerializer, TransactionSerializer
-from .models import Product, Transaction
-from datetime import datetime, date, timedelta
+from .models import Product, Transaction, ImportStock
+from datetime import datetime, timedelta
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-import pytz
-from django.utils import timezone
 
 class ProductListAPIView(APIView):
     authentication_classes = [JWTAuthentication]
@@ -62,6 +60,14 @@ class ProductUpdateAPIView(APIView):
             transaction.amount_total = quantityRetrait * product.price_selling
         transaction.save()
 
+    def save_stock(self, product, quantityImport):
+        stock = ImportStock()
+        stock.product = product
+        stock.import_date = str(datetime.now())
+        stock.import_quantity = quantityImport
+        stock.amount_spending = quantityImport * product.price
+        stock.save()
+
     def put(self, request, *args, **kwargs):
         try:
             products = []
@@ -82,6 +88,9 @@ class ProductUpdateAPIView(APIView):
                     if product.quantity_in_stock < quantityInStock:
                         quantityRetrait = quantityInStock - product.quantity_in_stock
                         self.save_transaction(product, float(quantityRetrait))
+                    else:
+                        quantityImport = product.quantity_in_stock - quantityInStock
+                        self.save_stock(product, float(quantityImport))
 
                     product.save()
                     products.append(product)
@@ -143,7 +152,7 @@ class TransactionRetrieveAPIView(APIView):
 
         delta = timedelta(days=1)
 
-        while start <= end:
+        while start < end:
             endOfDay = start.replace(hour=23, minute=59, second=59)
             queryset = Transaction.objects.filter(selling_date__range=[start, endOfDay])
             dataList = self.parse_queryset(queryset, dataList, "day", start)
@@ -155,7 +164,7 @@ class TransactionRetrieveAPIView(APIView):
         start = int(self.request.query_params.get('start_date'))
         end = int(self.request.query_params.get('end_date'))
         year = int(self.request.query_params.get('year'))
-        while start <= end:
+        while start < end:
             queryset = Transaction.objects.filter(selling_date__week=start, selling_date__year=year)
             dataList = self.parse_queryset(queryset, dataList, "week", start)
             start += 1
@@ -166,7 +175,7 @@ class TransactionRetrieveAPIView(APIView):
         start = int(self.request.query_params.get('start_date'))
         end = int(self.request.query_params.get('end_date'))
         year = int(self.request.query_params.get('year'))
-        while start <= end:
+        while start < end:
             queryset = Transaction.objects.filter(selling_date__month=start, selling_date__year=year)
             dataList = self.parse_queryset(queryset, dataList, "month", start)
             start += 1
@@ -177,7 +186,7 @@ class TransactionRetrieveAPIView(APIView):
         start = int(self.request.query_params.get('start_date'))
         end = int(self.request.query_params.get('end_date'))
         year = int(self.request.query_params.get('year'))
-        while start <= end:
+        while start < end:
             queryset = Transaction.objects.filter(selling_date__quarter=start, selling_date__year=year)
             dataList = self.parse_queryset(queryset, dataList, "trimestre", start)
             start += 1
@@ -187,7 +196,7 @@ class TransactionRetrieveAPIView(APIView):
         dataList = []
         start = int(self.request.query_params.get('start_date'))
         end = int(self.request.query_params.get('end_date'))
-        while start <= end:
+        while start < end:
             queryset = Transaction.objects.filter(selling_date__year=start)
             dataList = self.parse_queryset(queryset, dataList, "year", start)
             start += 1
@@ -217,5 +226,42 @@ class TransactionRetrieveAPIView(APIView):
             print("Something broken")
         return Response(dataList)
 
+class StatisticRetrieveAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        start = int(self.request.query_params.get('year_start'))
+        end = int(self.request.query_params.get('year_end'))
+        dataList = []
+        while start < end:
+            selling_sum = 0
+            depending_sum = 0
+            dataDict = {}
+            queryTrans = Transaction.objects.filter(selling_date__year=start)
+            queryImport = ImportStock.objects.filter(import_date__year=start)
+            for trans in queryTrans:
+                selling_sum += trans.amount_total
+            for imp in queryImport:
+                depending_sum += imp.amount_spending
+            start += 1
+            tax = round(0.3 * selling_sum, 2)
+            benefice = round(selling_sum - depending_sum - tax, 2)
+            dataDict = {
+                "year": start,
+                "selling_sum": selling_sum,
+                "depending_sum": depending_sum,
+                "tax": tax,
+                "benefice": benefice
+            }
+            dataList.append(dataDict)
+        return dataList
 
+    def get(self, request, *args, **kwargs):
+        try:
+            dataList = self.get_queryset()
+            print(dataList)
+        except UnboundLocalError as e:
+            print(e)
+            print("Something broken")
+        return Response(dataList)

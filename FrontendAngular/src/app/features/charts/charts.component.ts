@@ -33,6 +33,7 @@ export class ChartsComponent implements OnInit, OnDestroy {
     this.eventSubscription = this.events.subscribe(
       (res) => {
         console.log("reload Charts")
+        console.log(this.barChartData);
         this.update();
       }
     )
