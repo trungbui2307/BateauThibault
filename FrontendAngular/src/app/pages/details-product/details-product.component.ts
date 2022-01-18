@@ -62,6 +62,7 @@ export class DetailsProductComponent implements OnInit {
     if (this.percent) {
       this.selectedProduct.price_on_sale = this.selectedProduct.price_selling * (100 - Number(this.percent)) / 100;
       this.selectedProduct.discount = this.percent;
+      //this.selectedProduct.sale = true;
     }
 
     let putProduct: UpdatedProduct[] = [{
@@ -78,6 +79,7 @@ export class DetailsProductComponent implements OnInit {
         if (this.selectedProduct) {          
           this.selectedProduct = {
             ...this.selectedProduct!,
+            sale: res[0].sale,
             price_on_sale: res[0].price_on_sale,
             price_selling: res[0].price_selling,
             discount: res[0].discount,

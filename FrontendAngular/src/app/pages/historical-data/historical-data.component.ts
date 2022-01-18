@@ -92,7 +92,7 @@ export class HistoricalDataComponent implements OnInit {
       { data: [], label: 'Chiffre d\'affaire' },
       { data: [], label: 'Quantite vendu' }
     ]
-  };
+  };  
   
   public paramRequest: ParamRequest = {
     start_date: '2022-01-01',
@@ -101,40 +101,45 @@ export class HistoricalDataComponent implements OnInit {
     year: '',
   }
 
+  public timer: any;
+  public checkBox: boolean = false;
+
   public constructor(private productService: ProductService) {}
 
   public ngOnInit(): void {
-    this.getTransactions();  
+    this.timer = setInterval(() => this.getTransactions(), 5000);
   }
 
   public getTransactions() {     
-    //console.log(this.paramRequest);
-    if (this.paramRequest.type === 'statistic') {
+    this.resetDatasets();
+    if (this.paramRequest.type == 'statistic') {      
+      this.barChartData.datasets.push({
+        label: "Impot",
+        data: [],            
+      });
+      this.barChartData.datasets[0].label = "Chiffre d\'affaire";
+      this.barChartData.datasets[1].label = "Benefice";
       this.productService
       .getStatistics(this.paramRequest)
-      .subscribe((res: ApiStatisticResponse[]) => {
-        this.resetDatasets();
+      .subscribe((res: ApiStatisticResponse[]) => {        
         res.forEach((e) => {          
           this.barChartData.labels?.push(e.year.toString());
-          this.barChartData.datasets[0].data.push(e.benefice);
-          this.barChartData.datasets[0].label = "Benefice";
-          this.barChartData.datasets[1].data.push(e.tax);
-          this.barChartData.datasets[1].label = "Impot";
+          this.barChartData.datasets[0].data.push(e.selling_sum);          
+          this.barChartData.datasets[1].data.push(e.benefice);          
+          this.barChartData.datasets[2].data.push(e.tax);          
           
           let paramChart: ParamChart = {
             barChartOptions: this.barChartOptions,
             barChartType: this.barChartType,
             barChartData: this.barChartData
           }
-          //console.log(this.barChartData);
           this.eventSubject.next(paramChart);
         });        
       });
     } else {
       this.productService
       .getTransactions(this.paramRequest)
-      .subscribe((res: ApiResponse[]) => {
-        this.resetDatasets();
+      .subscribe((res: ApiResponse[]) => {        
         res.forEach((e) => {
           if (e.day) this.barChartData.labels?.push(e.day);
           if (e.week) this.barChartData.labels?.push(e.week.toString());
@@ -181,7 +186,7 @@ export class HistoricalDataComponent implements OnInit {
         { data: [], label:  'Chiffre d\'affaire'},
         { data: [], label: 'Quantite vendu' }
       ]
-    }
+    };
   }
 
   public onTabChange($event: any): void {
@@ -190,7 +195,17 @@ export class HistoricalDataComponent implements OnInit {
     this.paramRequest.end_date = this.selectedTypes[$event.index].end_date;
     this.paramRequest.year = (!this.selectedTypes[$event.index].isYearHidden) ?
                                 this.selectedTypes[$event.index].year : '';
-    //console.log(this.paramRequest);
+    console.log(this.paramRequest);
+  }
+
+  public turnOffAutoRefresh($event: any): void {
+    this.checkBox = !this.checkBox;
+    
+    if (this.checkBox) {
+      clearInterval(this.timer);
+    } else {
+      this.timer = setInterval(() => this.getTransactions(), 5000);
+    }
   }
 
 }
