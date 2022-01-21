@@ -28,7 +28,7 @@ C’est un projet désire un site simple gérer les produits.
 * [Python version v3.8.10](https://www.python.org/downloads/release/python-3810/)
 
 ## Développement
-#### Frotnend
+#### Frontend
 Pour exécuter ce projet Angular, installez-le localement à l'aide de npm :
 ```
 $ npm install - g @angular/cli
