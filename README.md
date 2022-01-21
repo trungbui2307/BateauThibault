@@ -3,7 +3,7 @@ BateauThibault
 
 # Table de matière
 * [Informations générales](#Informations-générales)
-* [Téchnology](#Téchnology)
+* [Technology](#Téchnology)
 * [Installer](#Installer)
 * [Fonctionnalités](#Fonctionnalités) 
 * [Questions? Problèmes? Suggestions?](#Questions-Problèmes-Suggestions)
@@ -11,7 +11,7 @@ BateauThibault
 ## Informations générales
 C’est un projet désire un site simple gérer les produits.
 
-## Téchnology
+## Technology
 Projet est créé avec:
 #### Framework:
     * Django
@@ -38,4 +38,4 @@ $ ng serve
 
 ## Questions? Problèmes? Suggestions?
 * Rapporter un bug ou request fonctionnalité, veuillez vous assurer que quelqu'un d'autre n'a pas créé de problème pour le même sujet.
-* Besoin d'aide pour utiliser Bateau Thibault ? Contactez Slack. Un ingénieur se fera un plaisir de vous aider.
+* Besoin d'aide pour utiliser Bateau Thibault ? Contactez Slack.
