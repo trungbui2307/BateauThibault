@@ -3,7 +3,7 @@ BateauThibault
 
 # Table de matière
 * [Informations générales](#Informations-générales)
-* [Technology](#Téchnology)
+* [Technologie](#Téchnology)
 * [Installer](#Installer)
 * [Fonctionnalités](#Fonctionnalités) 
 * [Questions? Problèmes? Suggestions?](#Questions-Problèmes-Suggestions)
@@ -11,7 +11,7 @@ BateauThibault
 ## Informations générales
 C’est un projet désire un site simple gérer les produits.
 
-## Technology
+## Technologie
 Projet est créé avec:
 #### Framework:
     * Django
