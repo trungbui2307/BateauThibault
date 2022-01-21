@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ProductService {
-  public API_URL: string = 'http://localhost:8000/api/v1';
+  public API_URL: string = 'http://ec2-35-181-151-14.eu-west-3.compute.amazonaws.com:8000/api/v1';
 
   httpOptions = {
     headers: new HttpHeaders({
