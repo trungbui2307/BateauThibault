@@ -78,7 +78,10 @@ class ProductUpdateAPIView(APIView):
 
                     for key, val in prod.items():
                         if key == "discount":
-                            product.sale = True
+                            if prod[key] == 0:
+                                product.sale = False
+                            else:
+                                product.sale = True
                             product.discount = val
                             sale = val/100 * product.price_selling
                             product.price_on_sale = product.price_selling - sale
@@ -101,23 +104,6 @@ class ProductUpdateAPIView(APIView):
 
         return Response(serializer.data)
 
-
-class ProductRemoveAPIView(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
-    serializer_class = ProductSerializer
-
-    def put(self, request, id, *args, **kwargs):
-        try:
-            if id != None and request.method == "PUT":
-                product = Product.objects.get(id=id)
-                product.sale = False
-                product.save()
-                serializer = ProductSerializer(product)
-        except:
-            print("Can't find any product")
-
-        return Response(serializer.data)
 
 class TransactionRetrieveAPIView(APIView):
     authentication_classes = [JWTAuthentication]
