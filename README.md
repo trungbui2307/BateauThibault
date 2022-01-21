@@ -25,7 +25,7 @@ Projet est créé avec:
 ## Installer
 Pour exécuter ce projet, installez-le localement à l'aide de npm :
 ```
-$ npm install - g @angular/cli
+$ npm install 
 $ cd FrontendAngular
 $ ng serve
 ```
