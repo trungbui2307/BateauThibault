@@ -13,20 +13,19 @@ C’est un projet désire un site simple gérer les produits.
 ## Technologies
 
 #### Framework:
-[I'm an inline-style link](https://www.google.com)
-    * [Django](https://www.djangoproject.com/)
-    * [Angular](https://angular.io/)
-    * [Angular Material](https://material.angular.io/)
-    * Voir plus ici [Frontend Angular](https://github.com/cfa-2022/BateauThibault/tree/develop/FrontendAngular#readme)
+    - [Django](https://www.djangoproject.com/)
+    - [Angular](https://angular.io/)
+    - [Angular Material](https://material.angular.io/)
+    - Voir plus ici [Frontend Angular](https://github.com/cfa-2022/BateauThibault/tree/develop/FrontendAngular#readme)
    
 #### Langages:
-    * Python
-    * Typescipt
+    - Python
+    - Typescipt
    
 #### Outils requis
-    * [NodeJS version v14](https://nodejs.org/download/release/latest-v14.x/)
-    * [Angular CLI v12.2.10](https://newreleases.io/project/github/angular/angular-cli/release/12.2.10)
-    * [Python version v3.8.10](https://www.python.org/downloads/release/python-3810/)
+    - [NodeJS version v14](https://nodejs.org/download/release/latest-v14.x/)
+    - [Angular CLI v12.2.10](https://newreleases.io/project/github/angular/angular-cli/release/12.2.10)
+    - [Python version v3.8.10](https://www.python.org/downloads/release/python-3810/)
 
 ## Développement
 #### Frotnend
