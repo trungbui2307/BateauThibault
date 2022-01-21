@@ -13,6 +13,7 @@ C’est un projet désire un site simple gérer les produits.
 ## Technologies
 
 #### Framework:
+[I'm an inline-style link](https://www.google.com)
     * [Django](https://www.djangoproject.com/)
     * [Angular](https://angular.io/)
     * [Angular Material](https://material.angular.io/)
