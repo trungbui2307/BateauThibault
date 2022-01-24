@@ -3,8 +3,7 @@
 ## Table de matière
 * [Informations générales](#Informations-générales)
 * [Technologie](#Téchnology)
-* [Installer](#Installer)
-* [Fonctionnalités](#Fonctionnalités) 
+* [Installer](#Installer) [Fonctionnalités](#Fonctionnalités) 
 * [Questions? Problèmes? Suggestions?](#Questions-Problèmes-Suggestions)
 
 ## Informations générales
