@@ -1,0 +1,11 @@
+# docker-compose
+version: '3.8'
+services:
+  client:
+    image: client/client-bateau-thibault:latest
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    working_dir: /applis/prod/client/

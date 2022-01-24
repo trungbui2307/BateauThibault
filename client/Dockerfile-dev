@@ -1,0 +1,15 @@
+FROM node:14-slim
+
+# Create a directory where our app will be placed
+RUN mkdir -p /applis/dev/client/
+
+WORKDIR /applis/dev/client/
+
+COPY package*.json /applis/dev/client/
+
+RUN npm install -g @angular/cli@12.2.10 @angular-devkit/build-angular && npm install
+
+EXPOSE 4200 49153
+
+CMD ng serve --host 0.0.0.0 --port 4200 --poll 1
+
