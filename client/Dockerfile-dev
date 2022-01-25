@@ -1,6 +1,5 @@
-FROM node:14-slim
+FROM node:14.18.3-alpine
 
-# Create a directory where our app will be placed
 RUN mkdir -p /applis/dev/client/
 
 WORKDIR /applis/dev/client/
