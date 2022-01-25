@@ -55,9 +55,9 @@ services:
     labels:
       ofelia.enabled: "true"
       ofelia.job-exec.datecron.schedule: "@every 30s"
-      ofelia.job-exec.datecron.command: "python server/run/manage.py sale"
+      ofelia.job-exec.datecron.command: "python run/manage.py sale"
       ofelia.job-exec.productcron.schedule: "@every 60s"
-      ofelia.job-exec.productcron.command: "python server/run/manage.py load_products"
+      ofelia.job-exec.productcron.command: "python run/manage.py load_products"
 
   ofelia:
     container_name: ofelia_crontab
