@@ -9,3 +9,15 @@ services:
     ports:
       - "8080:80"
     working_dir: /applis/prod/client/
+    depends_on:
+      - server
+  server:
+    container_name: django_application
+    build:
+      context: server
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    command: python run/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/applis/prod/server/

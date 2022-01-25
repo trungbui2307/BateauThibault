@@ -1,5 +1,7 @@
 FROM node:14.18.3-alpine as build
 
+RUN mkdir -p /applis/dev/client/
+
 WORKDIR /applis/prod/client/
 
 COPY ./package.json /applis/prod/client/
