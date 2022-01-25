@@ -3,7 +3,7 @@ web:
   build: .
   container_name: django_environment
   volumes:
-    - .:/code
+    - .:/applis/prod/server/
 web_migrate:
   extends:
     service: web
