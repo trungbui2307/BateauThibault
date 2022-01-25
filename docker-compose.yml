@@ -9,3 +9,61 @@ services:
     ports:
       - "8080:80"
     working_dir: /applis/prod/client/
+
+  database:
+    container_name: postgresql_db
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=my_database
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: always
+
+  pgadmin:
+      container_name: pgadmin
+      image: dpage/pgadmin4
+      environment:
+        - PGADMIN_DEFAULT_EMAIL=postgres@admin.com
+        - PGADMIN_DEFAULT_PASSWORD=postgres
+      ports:
+        - "5050:80"
+      depends_on:
+        - database
+
+  server:
+    container_name: django_application
+    build:
+      context: server
+      dockerfile: Dockerfile
+    volumes:
+      - .:/code
+    depends_on:
+      - database
+    ports:
+      - "8000:8000"
+    command: bash -c "
+                    python server/run/manage.py makemigrations &&
+                    python server/run/manage.py migrate &&
+                    python server/run/manage.py init_admin &&
+                    python server/run/manage.py load_products &&
+                    python server/run/manage.py setup_fake_transaction &&
+                    python server/run/manage.py setup_fake_import_stock &&
+                    python server/run/manage.py runserver 0.0.0.0:8000 
+                    "
+    labels:
+      ofelia.enabled: "true"
+      ofelia.job-exec.datecron.schedule: "@every 30s"
+      ofelia.job-exec.datecron.command: "python server/run/manage.py sale"
+      ofelia.job-exec.productcron.schedule: "@every 60s"
+      ofelia.job-exec.productcron.command: "python server/run/manage.py load_products"
+
+  ofelia:
+    container_name: ofelia_crontab
+    image: mcuadros/ofelia:latest
+    command: daemon --docker
+    depends_on:
+      - server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
