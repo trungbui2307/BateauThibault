@@ -47,9 +47,9 @@ $ docker-compose up -d
 Pour exécuter ce projet Angular, installez-le localement à l'aide de npm :
 ```
 $ cd client
-$ npm install - g @angular/cli
+$ npm install -g @angular/cli
 $ npm install
-$ ng serve
+$ npm start
 ```
 
 #### Backend
@@ -59,6 +59,12 @@ $ cd server
 $ pip3 install -r requirements
 $ python3 run/manage.py runserver
 ```
+
+#### Ou trouver des applications
+
+* [Le frontend va démarrer au port 4200](http://localhost:4200)
+* [Le backend va démarrer au port 8000](http://localhost:8000)
+* La base de données va démarrer au port 5432 et son interface graphique pgadmin va démarrer au port [5050](http://localhost:5050)
 
 ## Fonctionnalités
 * Ecran Détail d’un produit
