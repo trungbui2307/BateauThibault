@@ -16,6 +16,8 @@ RUN pip install -r requirements.txt
 COPY . /applis/prod/server/
 
 # RUN python run/manage.py makemigrations && python run/manage.py migrate
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod a+x /entrypoint.sh
 
-CMD ["code/init.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 

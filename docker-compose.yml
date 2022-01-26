@@ -38,26 +38,17 @@ services:
       context: server
       dockerfile: Dockerfile
     volumes:
-      - .:/code
+      - .:/applis/prod/server/
     depends_on:
       - database
     ports:
       - "8000:8000"
-    command: bash -c "
-                    python run/manage.py makemigrations &&
-                    python run/manage.py migrate &&
-                    python run/manage.py init_admin &&
-                    python run/manage.py load_products &&
-                    python run/manage.py setup_fake_transaction &&
-                    python run/manage.py setup_fake_import_stock &&
-                    python run/manage.py runserver 0.0.0.0:8000 
-                    "
     labels:
       ofelia.enabled: "true"
       ofelia.job-exec.datecron.schedule: "@every 30s"
-      ofelia.job-exec.datecron.command: "python run/manage.py sale"
+      ofelia.job-exec.datecron.command: "python server/run/manage.py sale"
       ofelia.job-exec.productcron.schedule: "@every 60s"
-      ofelia.job-exec.productcron.command: "python run/manage.py load_products"
+      ofelia.job-exec.productcron.command: "python server/run/manage.py load_products"
 
   ofelia:
     container_name: ofelia_crontab
