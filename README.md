@@ -25,32 +25,46 @@ C’est un projet désire un site simple gérer les produits.
 * [NodeJS version v14](https://nodejs.org/download/release/latest-v14.x/)
 * [Angular CLI v12.2.10](https://newreleases.io/project/github/angular/angular-cli/release/12.2.10)
 * [Python version v3.8.10](https://www.python.org/downloads/release/python-3810/)
+* [Docker](https://www.docker.com/)
+* [docker-compose](https://docs.docker.com/compose/)
 
 ## Développement
-#### Frontend
-Pour exécuter ce projet Angular, installez-le localement à l'aide de npm :
-```
-$ npm install - g @angular/cli
-$ cd FrontendAngular
-$ ng serve
-```
 
-#### Backend
+#### Docker
 - Si vous avez Docker : 
 
 ```
-$ cd Bateauthibault
+$ docker-compose build --no-cache && docker-compose up
+```
+ou
+
+```
 $ docker-compose up -d
 ```
 
-
 - Si vous n'avez pas Docker : 
+#### Frontend
+Pour exécuter ce projet Angular, installez-le localement à l'aide de npm :
+```
+$ cd client
+$ npm install -g @angular/cli
+$ npm install
+$ npm start
+```
+
+#### Backend
 
 ```
-$ cd Bateauthibault
+$ cd server
 $ pip3 install -r requirements
 $ python3 run/manage.py runserver
 ```
+
+#### Ou trouver des applications
+
+* [Le frontend va démarrer au port 4200](http://localhost:4200)
+* [Le backend va démarrer au port 8000](http://localhost:8000)
+* La base de données va démarrer au port 5432 et son interface graphique pgadmin va démarrer au port [5050](http://localhost:5050)
 
 ## Fonctionnalités
 * Ecran Détail d’un produit
