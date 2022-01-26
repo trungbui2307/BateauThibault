@@ -25,29 +25,37 @@ C’est un projet désire un site simple gérer les produits.
 * [NodeJS version v14](https://nodejs.org/download/release/latest-v14.x/)
 * [Angular CLI v12.2.10](https://newreleases.io/project/github/angular/angular-cli/release/12.2.10)
 * [Python version v3.8.10](https://www.python.org/downloads/release/python-3810/)
+* [Docker](https://www.docker.com/)
+* [docker-compose](https://docs.docker.com/compose/)
 
 ## Développement
+
+#### Docker
+- Si vous avez Docker : 
+
+```
+$ docker-compose build --no-cache && docker-compose up
+```
+ou
+
+```
+$ docker-compose up -d
+```
+
+- Si vous n'avez pas Docker : 
 #### Frontend
 Pour exécuter ce projet Angular, installez-le localement à l'aide de npm :
 ```
+$ cd client
 $ npm install - g @angular/cli
-$ cd FrontendAngular
+$ npm install
 $ ng serve
 ```
 
 #### Backend
-- Si vous avez Docker : 
 
 ```
-$ cd Bateauthibault
-$ docker-compose up -d
-```
-
-
-- Si vous n'avez pas Docker : 
-
-```
-$ cd Bateauthibault
+$ cd server
 $ pip3 install -r requirements
 $ python3 run/manage.py runserver
 ```
