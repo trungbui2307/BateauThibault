@@ -2,24 +2,32 @@
 version: '3.8'
 services:
   client:
-    image: client/client-bateau-thibault:latest
+    container_name: client
     build:
       context: client
       dockerfile: Dockerfile
+    depends_on:
+      - server
+    expose:
+      - "80"
     ports:
       - "8080:80"
+    networks:
+      - frontend
     working_dir: /applis/prod/client/
 
   database:
     container_name: postgresql_db
     image: postgres
     ports:
-      - "5432:5432"
+      - "5432"
     environment:
       - POSTGRES_DB=my_database
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     restart: always
+    networks:
+      - backend
 
   pgadmin:
       container_name: pgadmin
@@ -33,7 +41,7 @@ services:
         - database
 
   server:
-    container_name: django_application
+    container_name: server
     build:
       context: server
       dockerfile: Dockerfile
@@ -42,7 +50,10 @@ services:
     depends_on:
       - database
     ports:
-      - "8000:8000"
+      - "8000"
+    networks:
+      - frontend
+      - backend
     labels:
       ofelia.enabled: "true"
       ofelia.job-exec.datecron.schedule: "@every 30s"
@@ -58,3 +69,9 @@ services:
       - server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
