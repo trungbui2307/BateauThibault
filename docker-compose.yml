@@ -11,8 +11,6 @@ services:
       - "80"
     ports:
       - "8080:80"
-    networks:
-      - frontend
     working_dir: /applis/prod/client/
 
   database:
@@ -24,8 +22,11 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
     networks:
       - backend
+      - database
 
   pgadmin:
       image: dpage/pgadmin4
@@ -36,6 +37,10 @@ services:
         - "5050:80"
       depends_on:
         - database
+      networks:
+        - database
+      volumes:
+        - "./servers.json:/pgadmin4/servers.json"
 
   server:
     build:
@@ -48,7 +53,6 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - frontend
       - backend
     labels:
       ofelia.enabled: "true"
@@ -66,7 +70,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
 networks:
-  frontend:
-    driver: bridge
   backend:
     driver: bridge
+  database:
+    driver: bridge
+
+volumes:
+  db-data:

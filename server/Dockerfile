@@ -13,11 +13,10 @@ WORKDIR /applis/prod/server/
 COPY requirements.txt /applis/prod/server/
 
 RUN pip install -r requirements.txt
-COPY . /applis/prod/server/
+COPY . applis/prod/server/
 
-# RUN python run/manage.py makemigrations && python run/manage.py migrate
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod a+x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
-
+ENTRYPOINT ["/entrypoint.sh", "--"]
+CMD ["python", "server/run/manage.py", "runserver", "0.0.0.0:8000"]
