@@ -66,6 +66,9 @@ $ python3 run/manage.py runserver
 * [Le backend va démarrer au port 8000](http://localhost:8000)
 * La base de données va démarrer au port 5432 et son interface graphique pgadmin va démarrer au port [5050](http://localhost:5050)
 
+#### Instructions
+* Username et password pour l'application, c'est admin et admin
+
 ## Fonctionnalités
 * Ecran Détail d’un produit
 * Modification du stock, pourcentage de promotion
