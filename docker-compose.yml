@@ -2,27 +2,33 @@
 version: '3.8'
 services:
   client:
-    image: client/client-bateau-thibault:latest
     build:
       context: client
       dockerfile: Dockerfile
+    depends_on:
+      - server
+    expose:
+      - "80"
     ports:
       - "8080:80"
     working_dir: /applis/prod/client/
 
   database:
-    container_name: postgresql_db
     image: postgres
     ports:
-      - "5432:5432"
+      - "5432"
     environment:
       - POSTGRES_DB=my_database
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+      - database
 
   pgadmin:
-      container_name: pgadmin
       image: dpage/pgadmin4
       environment:
         - PGADMIN_DEFAULT_EMAIL=postgres@admin.com
@@ -31,9 +37,12 @@ services:
         - "5050:80"
       depends_on:
         - database
+      networks:
+        - database
+      volumes:
+        - "./servers.json:/pgadmin4/servers.json"
 
   server:
-    container_name: django_application
     build:
       context: server
       dockerfile: Dockerfile
@@ -43,6 +52,8 @@ services:
       - database
     ports:
       - "8000:8000"
+    networks:
+      - backend
     labels:
       ofelia.enabled: "true"
       ofelia.job-exec.datecron.schedule: "@every 30s"
@@ -51,10 +62,18 @@ services:
       ofelia.job-exec.productcron.command: "python server/run/manage.py load_products"
 
   ofelia:
-    container_name: ofelia_crontab
     image: mcuadros/ofelia:latest
     command: daemon --docker
     depends_on:
       - server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+
+networks:
+  backend:
+    driver: bridge
+  database:
+    driver: bridge
+
+volumes:
+  db-data:

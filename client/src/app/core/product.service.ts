@@ -43,12 +43,12 @@ export class ProductService {
   public getTransactions(paramRequest: ParamRequest): Observable<ApiResponse[]> {
     let urlWithoutYear = this.API_URL+"/transactions/"+"?start_date="+paramRequest.start_date+"&end_date="+paramRequest.end_date+"&type="+paramRequest.type;
     let urlWithYear = urlWithoutYear + "&year="+paramRequest.year;
-    return (paramRequest.year === '') 
-      ? this.http.get<ApiResponse[]>(urlWithoutYear, this.httpOptions) 
+    return (paramRequest.year === '')
+      ? this.http.get<ApiResponse[]>(urlWithoutYear, this.httpOptions)
       : this.http.get<ApiResponse[]>(urlWithYear, this.httpOptions);
   }
 
-  public getStatistics(paramRequest: ParamRequest): Observable<ApiStatisticResponse[]> {    
+  public getStatistics(paramRequest: ParamRequest): Observable<ApiStatisticResponse[]> {
     return this.http.get<ApiStatisticResponse[]>(this.API_URL+"/statistic/?year_start="+paramRequest.start_date+"&year_end="+paramRequest.end_date, this.httpOptions);
   }
 
@@ -83,11 +83,11 @@ export interface ParamRequest {
   start_date: string,
   end_date: string,
   type: string,
-  year: string,  
+  year: string,
 }
 
 export interface ApiResponse {
-  day?: string,  
+  day?: string,
   week?: number,
   month?: number,
   year?: number,

@@ -1,24 +1,35 @@
-# Dockerfile for Django Applications
+FROM python:3.8 AS compile-image
 
-# Section 1- Base Image
-FROM python:3.8
+RUN python -m venv /opt/venv
+# Make sure we use the virtualenv:
+ENV PATH /opt/venv/bin:$PATH
 
-# Section 2- Python Interpreter Flags
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
+
+RUN pip install psycopg2-binary
+
+FROM python:3.8-slim AS build-image
+
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
-# Section 3- Project libraries
-RUN mkdir -p /applis/prod/server/
-WORKDIR /applis/prod/server/
-COPY requirements.txt /applis/prod/server/
+RUN mkdir -p /applis/prod/server
 
-RUN pip install -r requirements.txt
-COPY . /applis/prod/server/
+WORKDIR /applis/prod/server
 
-# RUN python run/manage.py makemigrations && python run/manage.py migrate
+COPY . /applis/prod/server
+
+COPY --from=compile-image /opt/venv /opt/venv
+
+# Make sure we use the virtualenv:
+ENV PATH /opt/venv/bin:$PATH
+
+
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod a+x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh", "/bin/bash"]
-CMD ["python run/manage.py runserver 0.0.0.0:8000"]
+ENTRYPOINT ["/entrypoint.sh", "--"]
+CMD ["python", "server/run/manage.py", "runserver", "0.0.0.0:8000"]
 
