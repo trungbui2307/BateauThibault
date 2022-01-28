@@ -6,13 +6,12 @@ ENV PATH /opt/venv/bin:$PATH
 
 COPY requirements.txt .
 
-RUN pip install -r --no-cache-dir requirements.txt
+RUN pip install -r requirements.txt
 
 RUN pip install psycopg2-binary
 
-FROM python:3.8-alpine AS build-image
+FROM python:3.8-slim AS build-image
 
-# Section 2- Python Interpreter Flags
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
