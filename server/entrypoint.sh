@@ -15,12 +15,13 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo -e "### Préparation du conteneur ###"
-python server/run/manage.py makemigrations
-python server/run/manage.py migrate
-python server/run/manage.py init_admin
-python server/run/manage.py load_products
-python server/run/manage.py setup_fake_transaction
-python server/run/manage.py setup_fake_import_stock
+
+python run/manage.py makemigrations
+python run/manage.py migrate
+python run/manage.py init_admin
+python run/manage.py load_products
+python run/manage.py setup_fake_transaction
+python run/manage.py setup_fake_import_stock
 
 
 echo -e "### Démarrage du conteneur ###"

@@ -31,4 +31,4 @@ ADD entrypoint.sh /entrypoint.sh
 RUN chmod a+x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh", "--"]
-CMD ["python", "server/run/manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "run/manage.py", "runserver", "0.0.0.0:8000"]
