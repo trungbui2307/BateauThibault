@@ -1,10 +1,11 @@
 # docker-compose
-version: '3.8'
+version: '3.3'
 services:
   client:
     build:
       context: client
       dockerfile: Dockerfile
+    #image: bateauthibault_client
     depends_on:
       - server
     expose:
@@ -43,11 +44,10 @@ services:
         - "./servers.json:/pgadmin4/servers.json"
 
   server:
+    #image: bateauthibault_server
     build:
       context: server
       dockerfile: Dockerfile
-    volumes:
-      - .:/applis/prod/server/
     depends_on:
       - database
     ports:
@@ -77,3 +77,4 @@ networks:
 
 volumes:
   db-data:
+
